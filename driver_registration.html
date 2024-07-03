@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <script src="js/functions.js"></script>
+  <link href="/client/css/style-user.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="registration-container">
+
+    <div class="title-box">
+      <h1 class="title">User Registration</h1>
+    </div>
+
+    <form action="" method="post">
+
+      <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" aria-describedby="helpId">
+
+      <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" aria-describedby="helpId">
+
+      <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Cedula" aria-describedby="helpId">
+
+      <input type="date" id="birthday" name="birthday" class="form-control" placeholder="Birthday" aria-describedby="helpId">
+
+      <input type="text" id="email" name="email" class="form-control" placeholder="Email" aria-describedby="helpId">
+
+      <input type="password" id="password" name="password" class="form-control" placeholder="Password" aria-describedby="helpId">
+
+      <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Repeat your password" aria-describedby="helpId">
+
+      <input type="number" id="phone" name="phone" class="form-control" placeholder="Phone number" aria-describedby="helpId">
+
+      <div class="vehicule-info">
+        <h2>Vehicle Information</h2>
+        <input type="text" id="own" name="own" class="form-control" placeholder="Owner" aria-describedby="helpId">
+        
+        <input type="text" id="make" name="make" class="form-control" placeholder="Make" aria-describedby="helpId">
+        
+        <input type="text" id="model" name="model" class="form-control" placeholder="Model" aria-describedby="helpId">
+        
+        <input type="number" id="year" name="year" class="form-control" placeholder="Year" aria-describedby="helpId">
+      </div>
+
+      <div class="links-group">
+        <p class="login-link">Already an user?<a href="/client/login.html">Login here</a></p>
+        <p class="driver-link">Register as a driver? <a href="#">Click here</a></p>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="createUser(); return false;">Sign up</button>
+    </form>
+  </div>
+
+</body>
+
+</html>

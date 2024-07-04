@@ -17,7 +17,12 @@ function assignEditEvents() {
       birthday: document.getElementById('birthday').value,
       email: document.getElementById('email').value,
       password : document.getElementById('password').value,
-      phone_number : document.getElementById('phone').value
+      phone_number : document.getElementById('phone').value,
+      address : document.getElementById('address').value,
+      country : document.getElementById('country').value,
+      state : document.getElementById('state').value,
+      city : document.getElementById('city').value,
+      role: document.getElementById('role').value
 
     }
   

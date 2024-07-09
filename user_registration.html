@@ -4,60 +4,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration</title>
+  <title>User Registration</title>
   <script src="js/functions.js"></script>
   <link href="/client/css/style-user.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <div class="registration-container">
+  <div class="container">
 
     <div class="title-box">
       <h1 class="title">User Registration</h1>
     </div>
 
     <form action="" method="post">
-      <div class="input-container">
-
-      <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"
-        aria-describedby="helpId">
-
-      <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name"
-        aria-describedby="helpId">
-
-      <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Cedula" aria-describedby="helpId">
-
-      <input type="Date" id="birthday" name="birthday" class="form-control" placeholder="Brithday"
-        aria-describedby="helpId">
-
-      <input type="text" id="email" name="email" class="form-control" placeholder="Email" aria-describedby="helpId">
-
-      <input type="password" id="password" name="password" class="form-control" placeholder="Password"
-        aria-describedby="helpId">
-
-      <input type="password" id="password" name="password" class="form-control" placeholder="Reapet your password"
-        aria-describedby="helpId">
-
-      <input type="number" id="phone" name="phone" class="form-control" placeholder="Phone number"
-        aria-describedby="helpId">
-
-      <input type="text" id="address" name="address" class="form-control" placeholder="Address"
-        aria-describedby="helpId">
-
-      <input type="text" id="country" name="country" class="form-control" placeholder="Country"
-        aria-describedby="helpId">
-
-      <input type="text" id="state" name="state" class="form-control" placeholder="State" aria-describedby="helpId">
-
-      <input type="text" id="city" name="city" class="form-control" placeholder="City" aria-describedby="helpId">
-    </div>
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" id="first-name" name="first-name" placeholder="First Name">
+        </div>
+        <div class="form-group">
+          <input type="text" id="last-name" name="last-name" placeholder="Last Name">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" id="cedula" name="cedula" placeholder="Cedula">
+        </div>
+        <div class="form-group">
+          <input type="text" id="birthday" name="birthday" placeholder="Birthday">
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" name="email" placeholder="Email">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <input type="password" id="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <input type="password" id="repeat-password" name="repeat-password" placeholder="Repeat Password">
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" id="address" name="address" placeholder="Address">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" id="country" name="country" placeholder="Country">
+        </div>
+        <div class="form-group">
+          <input type="text" id="state" name="state" placeholder="State">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" id="city" name="city" placeholder="City">
+        </div>
+        <div class="form-group">
+          <input type="text" id="phone-number" name="phone-number" placeholder="Phone Number">
+        </div>
+      </div>
 
       <div class="links-group">
-        <p class="login-link">Already an user?<a href="/client/login.html">Login here</a></p>
-        <p class="driver-link">Register as a driver? <a href="/client/driver_registration.html">Click here</a></p>
+        <p>Already an user? <a href="./login.html">Login here</a> Register as driver? <a href="./driver_registration.html">Click here</a></p>
+        <button type="submit">Sign up</button>
       </div>
-      <button type="button" class="btn btn-primary" onclick="createUser(); return false;">Sing up</button>
+
     </form>
   </div>
 

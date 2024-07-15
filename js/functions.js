@@ -6,31 +6,31 @@ function assignEditEvents() {
         e.preventDefault();
       });
     }
-  
   }
   
-  async function createUser() {
-    let user =  {
+  async function createUser(event) {
+    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+  
+    let user = {
       first_name: document.getElementById('first_name').value,
       last_name: document.getElementById('last_name').value,
       cedula: document.getElementById('cedula').value,
       birthday: document.getElementById('birthday').value,
       email: document.getElementById('email').value,
-      password : document.getElementById('password').value,
-      phone_number : document.getElementById('phone').value,
-      address : document.getElementById('address').value,
-      country : document.getElementById('country').value,
-      state : document.getElementById('state').value,
-      city : document.getElementById('city').value,
-      role: document.getElementById('role').value
-
+      password: document.getElementById('password').value,
+      phone_number: document.getElementById('phone').value,
+      address: document.getElementById('address').value,
+      country: document.getElementById('country').value,
+      state: document.getElementById('state').value,
+      city: document.getElementById('city').value,
+      role: 'client'
     }
   
-    const response = await fetch("http://localhost:3001/api/user",{
+    const response = await fetch("http://localhost:3001/api/user", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic x'
+        'Authorization': 'Basic x' // Reemplaza con tu autenticación si es necesaria
       },
       body: JSON.stringify(user)
     });
@@ -46,3 +46,39 @@ function assignEditEvents() {
   
   
   }
+
+
+  // login.js
+
+document.addEventListener('DOMContentLoaded', function () {
+  const loginForm = document.getElementById('loginForm');
+
+  loginForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(loginForm);
+      const email = formData.get('email');
+      const password = formData.get('password');
+
+      try {
+          const response = await fetch('/api/login', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email, password }),
+          });
+
+          if (!response.ok) {
+              throw new Error('Login failed');
+          }
+
+          // Redireccionar a otra página después del login exitoso
+          window.location.href = '/client/dashboard.html'; // Reemplaza con la ruta de tu dashboard o página principal
+
+      } catch (error) {
+          console.error('Error during login:', error);
+          // Aquí podrías mostrar un mensaje de error en el frontend si lo necesitas
+      }
+  });
+});

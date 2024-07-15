@@ -24,7 +24,7 @@ body {
 }
 
 .logo-title {
-    position: absolute; /* Cambiar a posicionamiento absoluto */
+    
     top: 280px; /* Mover hacia arriba */
     display: flex;
     align-items: center;

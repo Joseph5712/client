@@ -5,25 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Registration</title>
-  <script src="js/functions.js"></script>
+  <script src="/client/js/functions.js"></script>
   <link href="/client/css/style-user.css" rel="stylesheet">
 </head>
 
 <body>
 
   <div class="container">
-
     <div class="title-box">
       <h1 class="title">User Registration</h1>
     </div>
 
-    <form action="" method="post">
+    <form id="userForm" action="/api/user" method="post" onsubmit="createUser(event)">
       <div class="form-row">
         <div class="form-group">
-          <input type="text" id="first-name" name="first-name" placeholder="First Name">
+          <input type="text" id="first_name" name="first_name" placeholder="First Name">
         </div>
         <div class="form-group">
-          <input type="text" id="last-name" name="last-name" placeholder="Last Name">
+          <input type="text" id="last_name" name="last_name" placeholder="Last Name">
         </div>
       </div>
       <div class="form-row">
@@ -62,15 +61,14 @@
           <input type="text" id="city" name="city" placeholder="City">
         </div>
         <div class="form-group">
-          <input type="text" id="phone-number" name="phone-number" placeholder="Phone Number">
+          <input type="text" id="phone" name="phone" placeholder="Phone Number">
         </div>
       </div>
 
       <div class="links-group">
-        <p>Already an user? <a href="./login.html">Login here</a> Register as driver? <a href="./driver_registration.html">Click here</a></p>
+        <p>Already a user? <a href="./login.html">Login here</a> Register as driver? <a href="./driver_registration.html">Click here</a></p>
         <button type="submit">Sign up</button>
       </div>
-
     </form>
   </div>
 

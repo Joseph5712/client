@@ -22,6 +22,11 @@ body {
 }
 
 .logo-title {
+<<<<<<< HEAD
+=======
+    
+    top: 280px; /* Mover hacia arriba */
+>>>>>>> 2702c7ddc4c44705c632d1c0364dd52babc9cd82
     display: flex;
     align-items: center;
     margin-bottom: 20px; /* Añade margen inferior para separar la imagen del formulario */

@@ -44,5 +44,27 @@ function assignEditEvents() {
       alert("Shit's on fire! ");
     }
   
-  
   }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const password = document.getElementById('password');
+    const repeatPassword = document.getElementById('repeat-password');
+    const passwordError = document.getElementById('password-error');
+    const address = document.getElementById('address');
+  
+    repeatPassword.addEventListener('blur', function () {
+      if (password.value !== repeatPassword.value) {
+        passwordError.textContent = 'Passwords do not match';
+      } else {
+        passwordError.textContent = '';
+      }
+    });
+  
+    address.addEventListener('focus', function () {
+      if (password.value !== repeatPassword.value) {
+        passwordError.textContent = 'Passwords do not match';
+      } else {
+        passwordError.textContent = '';
+      }
+    });
+  });

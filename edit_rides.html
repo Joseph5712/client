@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Ride</title>
     <link rel="stylesheet" href="/client/css/style-form-edit-rides.css">
+    <script src="/client/js/functions.js" defer></script>
 </head>
 
 <body>
@@ -42,7 +43,7 @@
                 <h1 class="title">New Ride</h1>
             </div>
 
-            <form>
+            <form id="rideForm">
                 <div class="form-row">
                     <div class="form-group">
                         <input type="text" id="departure" name="departure" placeholder="Departure from">
@@ -53,13 +54,13 @@
                 </div>
                 <label>Days</label>
                 <div class="days">
-                    <label><input type="checkbox" name="days" value="mon"> Mon</label>
-                    <label><input type="checkbox" name="days" value="tue"> Tue</label>
-                    <label><input type="checkbox" name="days" value="wed"> Wed</label>
-                    <label><input type="checkbox" name="days" value="thu"> Thu</label>
-                    <label><input type="checkbox" name="days" value="fri"> Fri</label>
-                    <label><input type="checkbox" name="days" value="sat"> Sat</label>
-                    <label><input type="checkbox" name="days" value="sun"> Sun</label>
+                    <label><input type="checkbox" id="mon" name="days" value="mon"> Mon</label>
+                    <label><input type="checkbox" id="tue" name="days" value="tue"> Tue</label>
+                    <label><input type="checkbox" id="wed" name="days" value="wed"> Wed</label>
+                    <label><input type="checkbox" id="thu" name="days" value="thu"> Thu</label>
+                    <label><input type="checkbox" id="fri" name="days" value="fri"> Fri</label>
+                    <label><input type="checkbox" id="sat" name="days" value="sat"> Sat</label>
+                    <label><input type="checkbox" id="sun" name="days" value="sun"> Sun</label>
                 </div>
                 <div class="form-row">
                 <input type="text" id="time" name="time" placeholder="Time">
@@ -82,7 +83,7 @@
                         <input type="text" id="model" name="model" placeholder="Model">
                     </div>
                     <div class="vehicle-row">
-                        <input type="number" id="year" name="year" min="1900" placeholder=Year>
+                        <input type="number" id="year" name="year" min="1900" placeholder="Year">
                     </div>
                 </div>
                 </fieldset>

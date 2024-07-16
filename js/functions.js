@@ -77,6 +77,7 @@ function assignEditEvents() {
     }
   
   }
+  
 
 
 
@@ -134,5 +135,52 @@ async function login() {
 }
 
 
+document.getElementById('rideForm').addEventListener('submit', createRide);
+
+async function createRide(event) {
+    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+
+    // Obtener los valores del formulario
+    let days = {
+        mon: document.getElementById('mon').checked,
+        tue: document.getElementById('tue').checked,
+        wed: document.getElementById('wed').checked,
+        thu: document.getElementById('thu').checked,
+        fri: document.getElementById('fri').checked,
+        sat: document.getElementById('sat').checked,
+        sun: document.getElementById('sun').checked
+    };
+
+    let ride = {
+        departureFrom: document.getElementById('departure').value,
+        arriveTo: document.getElementById('arrived').value,
+        days: days,
+        time: document.getElementById('time').value,
+        seats: document.getElementById('seats').value,
+        fee: document.getElementById('fee').value,
+        vehicleDetails: {
+            make: document.getElementById('make').value,
+            model: document.getElementById('model').value,
+            year: document.getElementById('year').value
+        }
+    };
+
+    // Enviar los datos del ride
+    let response = await fetch("http://localhost:3001/api/rides", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ride)
+    });
+
+    if (response.ok) {
+        let rideData = await response.json();
+        console.log('Ride created:', rideData);
+        alert('Ride created successfully');
+    } else {
+        alert('Error creating ride');
+    }
+}
 
 

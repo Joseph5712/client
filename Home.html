@@ -1,11 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Search Rides</title>
+    <link rel="stylesheet" href="/client/css/style-home.css">
 </head>
+
 <body>
-    
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <img src="/client/image/carro_logo.png" alt="Aventones Logo">
+                <span>AVENTONES</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Rides</a></li>
+                    <li><a href="#">Bookings</a></li>
+                </ul>
+            </nav>
+            <div class="search-container">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-icon">
+                <img src="/client/image/user.png" alt="User Icon">
+            </div>
+        </div>
+    </header>
+    <main>
+        <h1>Search rides</h1>
+        <form class="search-form">
+            <div class="form-group">
+                <label for="from">From</label>
+                <select id="from" name="from">
+                    <option value="Quesada">Quesada</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="to">To</label>
+                <select id="to" name="to">
+                    <option value="Zarcero">Zarcero</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <div class="form-group days">
+                <label>Days</label>
+                <label><input type="checkbox" name="days" value="mon"> Mon</label>
+                <label><input type="checkbox" name="days" value="tue"> Tue</label>
+                <label><input type="checkbox" name="days" value="wed"> Wed</label>
+                <label><input type="checkbox" name="days" value="thu"> Thu</label>
+                <label><input type="checkbox" name="days" value="fri"> Fri</label>
+                <label><input type="checkbox" name="days" value="sat"> Sat</label>
+                <label><input type="checkbox" name="days" value="sun"> Sun</label>
+            </div>
+            <button type="submit">Find rides</button>
+        </form>
+        <section class="results">
+            <h2>Rides found from <span id="origin">Quesada</span> to <span id="destination">Zarcero</span></h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Driver</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Seats</th>
+                        <th>Car</th>
+                        <th>Fee</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>barroyo</td>
+                        <td><a href="#">Quesada</a></td>
+                        <td>Alajuela</td>
+                        <td>2</td>
+                        <td>Nissan Pathfinder 2015</td>
+                        <td>$5</td>
+                        <td><a href="#" class="request-link">Request</a></td>
+                    </tr>
+                    <tr>
+                        <td>barroyo</td>
+                        <td><a href="#">Quesada</a></td>
+                        <td>Naranjo</td>
+                        <td>1</td>
+                        <td>Toyota Corolla 2020</td>
+                        <td>$10</td>
+                        <td><a href="#" class="request-link">Request</a></td>
+                    </tr>
+                    <tr>
+                        <td>yluna</td>
+                        <td><a href="#">Aguas Zarcas</a></td>
+                        <td>Naranjo</td>
+                        <td>1</td>
+                        <td>Ford Festiva 1990</td>
+                        <td>--</td>
+                        <td><a href="#" class="request-link">Request</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="map-container">
+                <img src="/client/image/map_placeholder.png" alt="Map">
+            </div>
+        </section>
+    </main>
 </body>
+
 </html>

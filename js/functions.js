@@ -7,6 +7,40 @@ function assignEditEvents() {
       });
     }
   }
+
+  async function getRides_user() {
+    const response = await fetch("http://localhost:3001/api/rides", {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  
+    const rides = await response.json();
+  
+    if (rides) {
+      const tableBody = document.getElementById('ride-table-body');
+      tableBody.innerHTML = '';
+  
+      rides.forEach(ride => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${ride.user ? ride.user.first_name + ' ' + ride.user.last_name : 'N/A'}</td>
+          <td>${ride.departureFrom}</td>
+          <td>${ride.arriveTo}</td>
+          
+          
+          
+          <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
+        `;
+        tableBody.appendChild(row);
+        console.log(rides)
+      });
+  
+      assignEditEvents();
+    }
+  }
+
   async function getRides() {
     const response = await fetch("http://localhost:3001/api/rides", {
       method: "GET",
@@ -27,7 +61,7 @@ function assignEditEvents() {
           <td>${ride.arriveTo}</td>
           <td>${ride.departureFrom}</td>
           <td>${ride.seats}</td>
-          <td>${ride.car}</td>
+          <td>${ride.vehicleDetails.make}</td>
           <td>${ride.fee}</td>
           <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
         `;
@@ -106,7 +140,6 @@ function assignEditEvents() {
 
 
 // functions.js
-
 async function login() {
   try {
       const email = document.getElementById('email').value;
@@ -123,6 +156,8 @@ async function login() {
       if (response.ok) {
           const data = await response.json();
           alert(`Login successful for ${data.user.email}`);
+          // Almacenar el userId en el local storage
+          localStorage.setItem('userId', data.user.id);
           // Aquí podrías redirigir al usuario al dashboard u otra página
       } else {
           const errorData = await response.json();
@@ -135,52 +170,55 @@ async function login() {
 }
 
 
+
 document.getElementById('rideForm').addEventListener('submit', createRide);
 
 async function createRide(event) {
-    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+  event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
 
-    // Obtener los valores del formulario
-    let days = {
-        mon: document.getElementById('mon').checked,
-        tue: document.getElementById('tue').checked,
-        wed: document.getElementById('wed').checked,
-        thu: document.getElementById('thu').checked,
-        fri: document.getElementById('fri').checked,
-        sat: document.getElementById('sat').checked,
-        sun: document.getElementById('sun').checked
-    };
+  // Obtener los valores del formulario
+  let days = {
+      mon: document.getElementById('mon').checked,
+      tue: document.getElementById('tue').checked,
+      wed: document.getElementById('wed').checked,
+      thu: document.getElementById('thu').checked,
+      fri: document.getElementById('fri').checked,
+      sat: document.getElementById('sat').checked,
+      sun: document.getElementById('sun').checked
+  };
 
-    let ride = {
-        departureFrom: document.getElementById('departure').value,
-        arriveTo: document.getElementById('arrived').value,
-        days: days,
-        time: document.getElementById('time').value,
-        seats: document.getElementById('seats').value,
-        fee: document.getElementById('fee').value,
-        vehicleDetails: {
-            make: document.getElementById('make').value,
-            model: document.getElementById('model').value,
-            year: document.getElementById('year').value
-        }
-    };
+  let ride = {
+      departureFrom: document.getElementById('departure').value,
+      arriveTo: document.getElementById('arrived').value,
+      days: days,
+      time: document.getElementById('time').value,
+      seats: document.getElementById('seats').value,
+      fee: document.getElementById('fee').value,
+      vehicleDetails: {
+          make: document.getElementById('make').value,
+          model: document.getElementById('model').value,
+          year: document.getElementById('year').value
+      },
+      userId: localStorage.getItem('userId') // Obtener el userId desde el local storage
+  };
 
-    // Enviar los datos del ride
-    let response = await fetch("http://localhost:3001/api/rides", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(ride)
-    });
+  // Enviar los datos del ride
+  let response = await fetch("http://localhost:3001/api/rides", {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ride)
+  });
 
-    if (response.ok) {
-        let rideData = await response.json();
-        console.log('Ride created:', rideData);
-        alert('Ride created successfully');
-    } else {
-        alert('Error creating ride');
-    }
+  if (response.ok) {
+      let rideData = await response.json();
+      console.log('Ride created:', rideData);
+      alert('Ride created successfully');
+  } else {
+      alert('Error creating ride');
+  }
 }
+
 
 

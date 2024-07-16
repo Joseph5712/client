@@ -1,65 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bookings</title>
-        <link rel="stylesheet" href="/client/css/style-form.rides.css">
-        <script src="/client/js/functions.js"></script>
-        <script>getRides();</script>
-    </head>
-    <body>
-      <header>
-        <div class="navbar">
-            <div class="logo">
-                <img src="/client/image/carro_logo.png" alt="Aventones Logo">
-                <span>AVENTONES</span>
-            </div>
-            <nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <link rel="stylesheet" href="/client/css/style-form.rides.css">
+    <script src="/client/js/functions.js"></script>
+    <script>getRides_user();</script>
+</head>
+<body>
+  <header>
+    <div class="navbar">
+        <div class="logo">
+            <img src="/client/image/carro_logo.png" alt="Aventones Logo">
+            <span>AVENTONES</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Rides</a></li>
+                <li><a href="#">Bookings</a></li>
+            </ul>
+        </nav>
+        <div class="search-container">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="user-icon" onclick="toggleMenu()">
+            <img src="/client/image/user.png" alt="User Icon">
+            <div id="user-menu" class="user-menu">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Rides</a></li>
-                    <li><a href="#">Bookings</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Logout</a></li>
                 </ul>
-            </nav>
-            <div class="search-container">
-                <input type="text" placeholder="Search...">
-            </div>
-            <div class="user-icon" onclick="toggleMenu()">
-                <img src="/client/image/user.png" alt="User Icon">
-                <div id="user-menu" class="user-menu">
-                    <ul>
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="#">Logout</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
-    </header>
-        
-          <main>
-            <h1>Bookings</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Ride</th>
-                  <th>Accept / Reject</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  
-                </tr>
-                <tr>
-                  
-                </tr>
-                <tr>
-                  
-                </tr>
-              </tbody>
-            </table>
-          </main>
-    </body>
+    </div>
+  </header>
+  <main>
+    <h1>Bookings</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Departure From</th>
+          <th>Arrive To</th>
+          <th>Accept / Reject</th>
+        </tr>
+      </thead>
+      <tbody id="ride-table-body">
+        <!-- Aquí se insertarán dinámicamente los rides -->
+      </tbody>
+    </table>
+  </main>
+</body>
 </html>

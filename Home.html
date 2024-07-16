@@ -31,65 +31,62 @@
         </div>
     </header>
     <main>
-        <h1>Search rides</h1>
-        <form class="search-form">
-            <div class="form-group">
-                <label for="from">From</label>
-                <select id="from" name="from">
-                    <option value="Quesada">Quesada</option>
-                    <!-- Add more options as needed -->
-                </select>
+        <div class="container">
+            <h1>Search rides</h1>
+            <div class="search-box">
+                <form class="search-form">
+                    <div class="form-group">
+                        <label for="from">From</label>
+                        <select id="from" name="from">
+                            <option value="Quesada">Quesada</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="to">To</label>
+                        <select id="to" name="to">
+                            <option value="Zarcero">Zarcero</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group days">
+                        <label>Days</label>
+                        <div class="days-checkboxes">
+                            <label><input type="checkbox" name="days" value="mon"> Mon</label>
+                            <label><input type="checkbox" name="days" value="tue"> Tue</label>
+                            <label><input type="checkbox" name="days" value="wed"> Wed</label>
+                            <label><input type="checkbox" name="days" value="thu"> Thu</label>
+                            <label><input type="checkbox" name="days" value="fri"> Fri</label>
+                            <label><input type="checkbox" name="days" value="sat"> Sat</label>
+                            <label><input type="checkbox" name="days" value="sun"> Sun</label>
+                        </div>
+                    </div>
+                    <button type="submit">Find rides</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="to">To</label>
-                <select id="to" name="to">
-                    <option value="Zarcero">Zarcero</option>
-                    <!-- Add more options as needed -->
-                </select>
-            </div>
-            <div class="form-group days">
-                <label>Days</label>
-                <label><input type="checkbox" name="days" value="mon"> Mon</label>
-                <label><input type="checkbox" name="days" value="tue"> Tue</label>
-                <label><input type="checkbox" name="days" value="wed"> Wed</label>
-                <label><input type="checkbox" name="days" value="thu"> Thu</label>
-                <label><input type="checkbox" name="days" value="fri"> Fri</label>
-                <label><input type="checkbox" name="days" value="sat"> Sat</label>
-                <label><input type="checkbox" name="days" value="sun"> Sun</label>
-            </div>
-            <button type="submit">Find rides</button>
-        </form>
-        <section class="results">
-            <h2>Rides found from <span id="origin">Quesada</span> to <span id="destination">Zarcero</span></h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Driver</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Seats</th>
-                        <th>Car</th>
-                        <th>Fee</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td><a href="#"></a></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="#" class="request-link">Request</a></td>
-                    </tr>
-                    
-                </tbody>
-            </table>
-            <div class="map-container">
-                <img src="/client/image/map_placeholder.png" alt="Map">
-            </div>
-        </section>
+            <section class="results">
+                <h2>Rides found from <span id="origin">Quesada</span> to <span id="destination">Zarcero</span></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Driver</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Seats</th>
+                            <th>Car</th>
+                            <th>Fee</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Ride entries will be dynamically inserted here -->
+                    </tbody>
+                </table>
+                <div class="map-container">
+                    <img src="/client/image/map_placeholder.png" alt="Map">
+                </div>
+            </section>
+        </div>
     </main>
 </body>
 

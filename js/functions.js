@@ -52,7 +52,6 @@ function assignEditEvents() {
     const passwordError = document.getElementById('password-error');
     const address = document.getElementById('address');
   
-<<<<<<< HEAD
     repeatPassword.addEventListener('blur', function () {
       if (password.value !== repeatPassword.value) {
         passwordError.textContent = 'Passwords do not match';
@@ -69,8 +68,37 @@ function assignEditEvents() {
       }
     });
   });
-=======
+
+
+// functions.js
+
+async function login() {
+  try {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('http://localhost:3001/api/login', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+          const data = await response.json();
+          alert(`Login successful for ${data.user.email}`);
+          // Aquí podrías redirigir al usuario al dashboard u otra página
+      } else {
+          const errorData = await response.json();
+          alert(`Login failed: ${errorData.error}`);
+      }
+  } catch (error) {
+      console.error('Error during login:', error);
+      alert('Login failed: Internal error');
   }
+}
 
 
->>>>>>> 2702c7ddc4c44705c632d1c0364dd52babc9cd82
+
+

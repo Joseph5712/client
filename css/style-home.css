@@ -55,8 +55,20 @@ nav ul li a:hover {
 }
 
 .search-container input {
-    padding: 5px;
+    padding: 8px;
     font-size: 14px;
+    width: 200px; /* Adjust width as needed */
+    margin-right: 10px;
+}
+
+.search-container button {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
 }
 
 .user-icon img {
@@ -81,11 +93,8 @@ main {
     border: 2px solid #afb1b1;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 119, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     background-color: #fff;
+    margin-top: 20px;
 }
 
 h1 {
@@ -95,29 +104,25 @@ h1 {
 
 .search-box {
     width: 100%;
-    max-width: 1500px;
-    padding: 10px;
+    max-width: 1000px;
+    padding: 20px;
     border: 2px solid #afb1b1;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 119, 255, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #fff;
-    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
 .search-form {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px; /* Add gap for spacing */
 }
 
 .form-group {
-    margin: 10px;
+    margin-bottom: 10px;
 }
 
 .form-group label {
@@ -125,10 +130,25 @@ h1 {
     margin-bottom: 5px;
 }
 
+.form-group input[type="text"],
 .form-group select {
-    padding: 5px;
+    padding: 8px;
     font-size: 14px;
-    width: 150px;
+    width: 200px; /* Adjust width as needed */
+}
+
+.days-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center; /* Alinea los elementos verticalmente */
+}
+
+.days-checkboxes input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    margin-bottom: 10px; /* Añade espacio inferior */
 }
 
 .days {
@@ -136,17 +156,12 @@ h1 {
     align-items: center;
 }
 
-.days-checkboxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
 .days-checkboxes label {
     display: flex;
     align-items: center;
 }
 
+button[type="button"],
 button[type="submit"] {
     padding: 10px 20px;
     font-size: 16px;

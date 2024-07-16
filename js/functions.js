@@ -302,5 +302,75 @@ async function createRide(event) {
 }
 }
 
+//buscador rides
+async function searchRides(event) {
+  
+
+  // Obtener valores del formulario
+  const from = document.getElementById('from').value;
+  const to = document.getElementById('to').value;
+  const days = Array.from(document.querySelectorAll('input[name="days"]:checked')).map(input => input.value);
+  
+  // Construir objeto de búsqueda
+  const searchParams = {
+    from,
+    to,
+    days
+  };
+
+  try {
+    const response = await fetch("http://localhost:3001/api/rides/search", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(searchParams)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const rides = await response.json();
+
+    // Limpiar la tabla antes de mostrar los resultados
+    const tableBody = document.getElementById('ride-table-body');
+    tableBody.innerHTML = '';
+
+    // Mostrar los rides encontrados en la tabla
+    rides.forEach(ride => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${ride.user ? ride.user.first_name + ' ' + ride.user.last_name : 'N/A'}</td>
+        <td>${ride.departureFrom}</td>
+        <td>${ride.arriveTo}</td>
+        <td>${ride.seats}</td>
+        <td>${ride.vehicleDetails.make}</td>
+        <td>${ride.fee}</td>
+        <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
+      `;
+      tableBody.appendChild(row);
+      console.log(ride)
+    });
 
 
+
+  } catch (error) {
+    console.error('Error searching rides:', error.message);
+    alert("Error searching rides: " + error.message);
+  }
+}
+
+// Función para asignar eventos de edición a los botones Editar
+function assignEditEvents() {
+  for (let el of document.getElementsByClassName("edit_button")) {
+    el.addEventListener("click", (e) => {
+      console.log(e.target.id);
+      alert(`Element with id ${e.target.id} clicked`);
+      e.preventDefault();
+    });
+  }
+}
+
+// Llama a la función getRides al cargar la página
+document.addEventListener("DOMContentLoaded", getRides);

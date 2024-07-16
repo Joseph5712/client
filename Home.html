@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Rides</title>
     <link rel="stylesheet" href="/client/css/style-home.css">
 </head>
-
 <body>
     <header>
         <div class="navbar">
@@ -22,34 +20,23 @@
                     <li><a href="view_bookings.html">Bookings</a></li>
                 </ul>
             </nav>
-            <div class="search-container">
-                <input type="text" placeholder="Search...">
-            </div>
             <div class="user-icon">
                 <img src="/client/image/user.png" alt="User Icon">
             </div>
+            <div class="user-info">
+                <span id="user-name"></span>
+            </div>
+            
         </div>
     </header>
     <main>
         <div class="container">
             <h1>Search rides</h1>
             <div class="search-box">
-                <form class="search-form">
-                    <div class="form-group">
-                        <label for="from">From</label>
-                        <select id="from" name="from">
-                            <option value="Quesada">Quesada</option>
-                            <!-- Add more options as needed -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="to">To</label>
-                        <select id="to" name="to">
-                            <option value="Zarcero">Zarcero</option>
-                            <!-- Add more options as needed -->
-                        </select>
-                    </div>
+                <form class="search-form" onsubmit="searchRides(); return false;">
                     <div class="form-group days">
+                        <input type="text" id="from" placeholder="From">
+                        <input type="text" id="to" placeholder="To">
                         <label>Days</label>
                         <div class="days-checkboxes">
                             <label><input type="checkbox" name="days" value="mon"> Mon</label>
@@ -65,7 +52,7 @@
                 </form>
             </div>
             <section class="results">
-                <h2>Rides found from <span id="origin">Quesada</span> to <span id="destination">Zarcero</span></h2>
+                <h2>Rides found from <span id="origin">-</span> to <span id="destination">-</span></h2>
                 <table>
                     <thead>
                         <tr>
@@ -78,16 +65,17 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="ride-table-body">
                         <!-- Ride entries will be dynamically inserted here -->
                     </tbody>
                 </table>
                 <div class="map-container">
-                    <img src="/client/image/map_placeholder.png" alt="Map">
+                    
                 </div>
             </section>
         </div>
     </main>
-</body>
 
+    <script src="/client/js/functions.js"></script>
+</body>
 </html>

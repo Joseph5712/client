@@ -36,7 +36,64 @@
             </div>
         </div>
     </header>
-    
+    <main>
+        <div class="container">
+            <div class="title-box">
+                <h1 class="title">New Ride</h1>
+            </div>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="departure" name="departure" placeholder="Departure from">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="arrived" name="arrived" placeholder="Arrived to">
+                    </div>
+                </div>
+                <label>Days</label>
+                <div class="days">
+                    <label><input type="checkbox" name="days" value="mon"> Mon</label>
+                    <label><input type="checkbox" name="days" value="tue"> Tue</label>
+                    <label><input type="checkbox" name="days" value="wed"> Wed</label>
+                    <label><input type="checkbox" name="days" value="thu"> Thu</label>
+                    <label><input type="checkbox" name="days" value="fri"> Fri</label>
+                    <label><input type="checkbox" name="days" value="sat"> Sat</label>
+                    <label><input type="checkbox" name="days" value="sun"> Sun</label>
+                </div>
+                <div class="form-row">
+                <input type="text" id="time" name="time" placeholder="Time">
+                <input type="number" id="seats" name="seats" min="1" max="32" placeholder="Seats">
+                <input type="number" id="fee" name="fee" min="0" placeholder="Fee">
+            </div>
+
+                <fieldset class="vehicle-details">
+                    <legend>Vehicle Details</legend>
+                    <div class="vehicle-row">
+                        <select id="make" name="make" aria-placeholder="Make">
+                            <option value="Nissan">Nissan</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Ford">Ford</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-row">
+                    <div class="vehicle-row">
+                        <input type="text" id="model" name="model" placeholder="Model">
+                    </div>
+                    <div class="vehicle-row">
+                        <input type="number" id="year" name="year" min="1900" placeholder=Year>
+                    </div>
+                </div>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='#'">Cancel</button>
+                    <button type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </main>
 
 </body>
 

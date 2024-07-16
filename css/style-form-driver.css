@@ -46,19 +46,6 @@ body {
     width: 100%;
 }
 
-form .vehicule-info {
-    width: 100%;
-    margin-bottom: 15px;
-    border: 1px solid #0099ff;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: #e6f7ff;
-}
-
-form .vehicule-info h2 {
-    margin: 0 0 10px 0;
-    color: #007bff;
-}
 
 .links-group {
     font-size: 12px;

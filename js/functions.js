@@ -61,7 +61,6 @@ async function getRides() {
           <td>${ride.departureFrom}</td>  
           <td>${ride.arriveTo}</td>
           <td>${ride.seats}</td>
-          <td>${ride.vehicleDetails.make +" "+ ride.vehicleDetails.model +" "+ ride.vehicleDetails.year}</td>
           <td>${ride.vehicleDetails.make}</td>
           <td>${ride.fee}</td>
           <td><a href="#" class="edit_button" id="${ride._id}">Edit</a> | <a class="delete_button" onclick="${deleteRide(ride._id)}">Delete</a></td>
@@ -227,18 +226,8 @@ document.getElementById("rideForm").addEventListener("submit", createRide);
 
 async function createRide(event) {
   event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
-  event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
 
-  // Obtener los valores del formulario
-  let days = {
-    mon: document.getElementById("mon").checked,
-    tue: document.getElementById("tue").checked,
-    wed: document.getElementById("wed").checked,
-    thu: document.getElementById("thu").checked,
-    fri: document.getElementById("fri").checked,
-    sat: document.getElementById("sat").checked,
-    sun: document.getElementById("sun").checked,
-  };
+
   // Obtener los valores del formulario
   let days = {
       mon: document.getElementById('mon').checked,
@@ -251,22 +240,9 @@ async function createRide(event) {
   };
 
   let ride = {
-    departureFrom: document.getElementById("departure").value,
-    arriveTo: document.getElementById("arrived").value,
-    days: days,
-    time: document.getElementById("time").value,
-    seats: document.getElementById("seats").value,
-    fee: document.getElementById("fee").value,
-    vehicleDetails: {
-      make: document.getElementById("make").value,
-      model: document.getElementById("model").value,
-      year: document.getElementById("year").value,
-    },
-  };
-  let ride = {
       departureFrom: document.getElementById('departure').value,
       arriveTo: document.getElementById('arrived').value,
-      days: days,
+      days: days.value,
       time: document.getElementById('time').value,
       seats: document.getElementById('seats').value,
       fee: document.getElementById('fee').value,
@@ -276,39 +252,30 @@ async function createRide(event) {
           year: document.getElementById('year').value
       },
       userId: localStorage.getItem('userId') // Obtener el userId desde el local storage
+      
   };
+  console.log(ride.userId)
 
-  // Enviar los datos del ride
-  let response = await fetch("http://localhost:3001/api/rides", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(ride),
-  });
-  // Enviar los datos del ride
-  let response = await fetch("http://localhost:3001/api/rides", {
-      method: "POST",
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(ride)
-  });
+  try {
+    let response = await fetch("http://localhost:3001/api/rides", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(ride)
+    });
 
-  if (response.ok) {
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     let rideData = await response.json();
     console.log("Ride created:", rideData);
     alert("Ride created successfully");
-  } else {
-    alert("Error creating ride");
-  }
-  if (response.ok) {
-      let rideData = await response.json();
-      console.log('Ride created:', rideData);
-      alert('Ride created successfully');
-  } else {
-      alert('Error creating ride');
-  }
+} catch (error) {
+    console.error('Error creating ride:', error.message);
+    alert("Error creating ride: " + error.message);
+}
 }
 
 

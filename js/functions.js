@@ -1,3 +1,4 @@
+// funcion para asignar eventos de edición a los botones Editar
 function assignEditEvents() {
   for (let el of document.getElementsByClassName("edit_button")) {
     el.addEventListener("click", (e) => {
@@ -7,7 +8,7 @@ function assignEditEvents() {
     });
   }
 }
-
+  //se muestra un ride con un id especifico del user(1 userDrive puede tener varios rides)
   async function getRides_user() {
     const response = await fetch("http://localhost:3001/api/rides", {
       method: "GET",
@@ -34,13 +35,13 @@ function assignEditEvents() {
           <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
         `;
         tableBody.appendChild(row);
-        console.log(rides)
       });
   
       assignEditEvents();
     }
   }
 
+  //se muestran los rides
   async function getRides() {
     const userId = localStorage.getItem('userId'); // Obtén el userId del localStorage
   
@@ -81,7 +82,7 @@ function assignEditEvents() {
       assignEditEvents();
     }
   }
-
+//se obtiene un ride con si id especifico
 async function getRideById(rideId){
   const response =await fetch("http://localhost:3001/api/rides/?id=${rideId}",{
     method: "GET",
@@ -133,7 +134,7 @@ async function deleteRide(rideId) {
   }
 }
 
-
+//crear user(depende del formulario, se crea el user con rol: driver o client)
 async function createUser(event) {
   event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
 
@@ -151,7 +152,6 @@ async function createUser(event) {
     city: document.getElementById("city").value,
     role: document.getElementById("role").value,
   };
-  console.log(user.role);
 
   const response = await fetch("http://localhost:3001/api/user", {
     method: "POST",
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// functions.js
+//se valida el login 
 async function login(event) {
   
 
@@ -213,15 +213,14 @@ async function login(event) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
 
       if (data.user && data.user._id) {
         alert(`Login successful for ${data.user.email}`);
-        // Almacenar el userId y el rol en el local storage
+        // Almacenar el userId local storage
         localStorage.setItem('userId', data.user._id);
         localStorage.setItem('userRole', data.user.role);
 
-        // Redirigir según el rol del usuario
+        // Redirigir segun el rol del usuario
         switch (data.user.role) {
           case 'driver':
             window.location.href = 'rides.html';
@@ -244,14 +243,11 @@ async function login(event) {
     alert("Login failed: Internal error");
   }
 }
-
-
 document.getElementById("rideForm").addEventListener("submit", createRide);
 
+//creacion del ride
 async function createRide(event) {
-  event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
-
-
+  event.preventDefault();
   // Obtener los valores del formulario
   let days = {
       mon: document.getElementById('mon').checked,
@@ -278,7 +274,6 @@ async function createRide(event) {
       userId: localStorage.getItem('userId') // Obtener el userId desde el local storage
       
   };
-  console.log(ride.userId)
 
   try {
     let response = await fetch("http://localhost:3001/api/rides", {
@@ -350,27 +345,63 @@ async function searchRides(event) {
         <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
       `;
       tableBody.appendChild(row);
-      console.log(ride)
     });
-
-
-
   } catch (error) {
     console.error('Error searching rides:', error.message);
     alert("Error searching rides: " + error.message);
   }
 }
 
-// Función para asignar eventos de edición a los botones Editar
-function assignEditEvents() {
-  for (let el of document.getElementsByClassName("edit_button")) {
-    el.addEventListener("click", (e) => {
-      console.log(e.target.id);
-      alert(`Element with id ${e.target.id} clicked`);
-      e.preventDefault();
-    });
+// Llama a la función getRides al cargar la página
+document.addEventListener("DOMContentLoaded", getRides);
+
+
+
+//obtener los datos del usuario logueado por medio del id
+async function getLoggedInUserInfo() {
+  try {
+      const userId = localStorage.getItem('userId');
+      
+      if (!userId) {
+          throw new Error('User ID not found in localStorage');
+      }
+
+      const response = await fetch(`http://localhost:3001/api/user/${userId}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error(`Failed to fetch user data: ${response.statusText}`);
+      }
+
+      const userData = await response.json();
+      return userData;
+  } catch (error) {
+      console.error('Error fetching user data:', error);
+      return null;
   }
 }
 
-// Llama a la función getRides al cargar la página
-document.addEventListener("DOMContentLoaded", getRides);
+//muuestra los datos del usuario en el html
+async function displayLoggedInUserName() {
+  const userNameElement = document.getElementById('user-name');
+  const userData = await getLoggedInUserInfo();
+
+  if (userData && userData.first_name && userData.last_name) {
+      userNameElement.textContent = `${userData.first_name} ${userData.last_name}`;
+  } else {
+      userNameElement.textContent = 'Guest';
+  }
+}
+// Llama a la función para mostrar el nombre de usuario al cargar la página
+document.addEventListener('DOMContentLoaded', displayLoggedInUserName);
+
+
+//cerrar sesion al presionar el boton logout
+function logout() {
+  localStorage.removeItem('userId'); 
+  window.location.href = 'login.html'; 
+}

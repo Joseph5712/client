@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Rides</title>
+    <meta name="description" content="Search rides page for Aventones">
+    <meta name="keywords" content="rides, carpooling, search rides, Aventones">
     <link rel="stylesheet" href="/client/css/style-home.css">
 </head>
 <body>
@@ -16,17 +18,17 @@
             <nav>
                 <ul>
                     <li><a href="Home.html">Home</a></li>
-                    <li><a href="">Rides</a></li>
+                    <li><a href="#">Rides</a></li>
                     <li><a href="view_bookings.html">Bookings</a></li>
                 </ul>
             </nav>
-            <div class="user-icon">
-                <img src="/client/image/user.png" alt="User Icon">
-            </div>
             <div class="user-info">
                 <span id="user-name"></span>
             </div>
-            
+            <div class="user-icon">
+                <img src="/client/image/user.png" alt="User Icon">
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
     <main>
@@ -77,5 +79,6 @@
     </main>
 
     <script src="/client/js/functions.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', displayLoggedInUserName);</script>
 </body>
 </html>

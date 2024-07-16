@@ -76,7 +76,7 @@ nav ul li a:hover {
     cursor: pointer;
 }
 
-main {
+.main {
     width: 100%;
     padding: 20px;
     max-width: 1000px;
@@ -213,4 +213,29 @@ table th {
     width: 100%;
     max-width: 600px;
     height: auto;
+}
+
+.user-info {
+    margin-left: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.logout-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+.logout-btn:hover {
+    background-color: #0056b3;
+}
+
+.user-icon {
+    margin-left: auto;
+    margin-right: 20px; /* Ajusta el margen derecho según sea necesario */
 }

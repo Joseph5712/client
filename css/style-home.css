@@ -1,9 +1,8 @@
-/* styles.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f9f9f9;
 }
 
 header {
@@ -46,6 +45,10 @@ nav ul li a {
     font-size: 16px;
 }
 
+nav ul li a:hover {
+    color: #007bff;
+}
+
 .search-container {
     display: flex;
     align-items: center;
@@ -62,7 +65,27 @@ nav ul li a {
 }
 
 main {
+    width: 100%;
     padding: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    border: 2px solid #afb1b1;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 119, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
 }
 
 h1 {
@@ -70,15 +93,31 @@ h1 {
     margin-bottom: 20px;
 }
 
+.search-box {
+    width: 100%;
+    max-width: 1500px;
+    padding: 10px;
+    border: 2px solid #afb1b1;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 119, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
 .search-form {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px; /* Add gap for spacing */
 }
 
 .form-group {
-    margin-right: 10px;
+    margin: 10px;
 }
 
 .form-group label {
@@ -86,8 +125,7 @@ h1 {
     margin-bottom: 5px;
 }
 
-.form-group select,
-.form-group input {
+.form-group select {
     padding: 5px;
     font-size: 14px;
     width: 150px;
@@ -96,11 +134,17 @@ h1 {
 .days {
     display: flex;
     align-items: center;
-    margin-left: 20px;
 }
 
-.days label {
-    margin-right: 10px;
+.days-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.days-checkboxes label {
+    display: flex;
+    align-items: center;
 }
 
 button[type="submit"] {
@@ -115,6 +159,7 @@ button[type="submit"] {
 
 .results {
     margin-top: 20px;
+    width: 100%;
 }
 
 .results h2 {

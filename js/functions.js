@@ -23,7 +23,7 @@ function assignEditEvents() {
       country: document.getElementById('country').value,
       state: document.getElementById('state').value,
       city: document.getElementById('city').value,
-      role: 'client'
+      role: document.getElementById('role').value
     }
   
     const response = await fetch("http://localhost:3001/api/user", {
@@ -46,31 +46,5 @@ function assignEditEvents() {
   
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const password = document.getElementById('password');
-    const repeatPassword = document.getElementById('repeat-password');
-    const passwordError = document.getElementById('password-error');
-    const address = document.getElementById('address');
-  
-<<<<<<< HEAD
-    repeatPassword.addEventListener('blur', function () {
-      if (password.value !== repeatPassword.value) {
-        passwordError.textContent = 'Passwords do not match';
-      } else {
-        passwordError.textContent = '';
-      }
-    });
-  
-    address.addEventListener('focus', function () {
-      if (password.value !== repeatPassword.value) {
-        passwordError.textContent = 'Passwords do not match';
-      } else {
-        passwordError.textContent = '';
-      }
-    });
-  });
-=======
-  }
 
 
->>>>>>> 2702c7ddc4c44705c632d1c0364dd52babc9cd82

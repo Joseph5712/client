@@ -15,6 +15,10 @@
             <img src="/client/image/carro_logo.png" alt="Aventones Logo">
             <span>AVENTONES</span>
         </div>
+        <div class="user-info">
+            <span id="user-name"></span>
+        </div>
+        
         <nav>
             <ul>
                 <li><a href="Home.html">Home</a></li>
@@ -35,6 +39,7 @@
                 </ul>
             </div>
         </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
   </header>
   <main>
@@ -54,4 +59,5 @@
     </table>
   </main>
 </body>
+<script>document.addEventListener('DOMContentLoaded', displayLoggedInUserName);</script>
 </html>

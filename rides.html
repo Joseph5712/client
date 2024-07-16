@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Rides</title>
-        <link rel="stylesheet" href="/client/css/style-form.rides.css">
-        <script src="/client/js/functions.js"></script>
-        <script>getRides();</script>
-    </head>
-    <body>
-      <header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rides</title>
+    <link rel="stylesheet" href="/client/css/style-form.rides.css">
+    <script src="/client/js/functions.js"></script>
+    <script>getRides();</script>
+</head>
+<body>
+    <header>
         <div class="navbar">
             <div class="logo">
                 <img src="/client/image/carro_logo.png" alt="Aventones Logo">
@@ -18,11 +18,13 @@
             <nav>
                 <ul>
                     <li><a href="rides.html">Rides</a></li>
-                    
                 </ul>
             </nav>
             <div class="search-container">
                 <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-info">
+                <span id="user-name"></span>
             </div>
             <div class="user-icon" onclick="toggleMenu()">
                 <img src="/client/image/user.png" alt="User Icon">
@@ -30,40 +32,34 @@
                     <ul>
                         <li><a href="#">Profile</a></li>
                         <li><a href="#">Settings</a></li>
-                        <li><a href="#">Logout</a></li>
+                        
                     </ul>
                 </div>
             </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
-        
-          <main>
-            <h1>My rides</h1>
-            <button  ></button>
-            <button class="new-ride-btn" type="button" onclick="window.location.href='./add_rides.html'">New Ride</button>
-            <table>
-              <thead>
+    <main>
+        <h1>My rides</h1>
+        <button class="new-ride-btn" type="button" onclick="window.location.href='./add_rides.html'">New Ride</button>
+        <table>
+            <thead>
                 <tr>
-                  <th>From</th>
-                  <th>To</th>
-                  <th>Seats</th>
-                  <th>Car</th>
-                  <th>Fee</th>
-                  <th>Actions</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Seats</th>
+                    <th>Car</th>
+                    <th>Fee</th>
+                    <th>Actions</th>
                 </tr>
-              </thead>
-              <tbody id="ride-table-body">
-                <tr>
-                  
-                </tr>
-                <tr>
-                  
-                </tr>
-                <tr>
-                  
-                </tr>
-              </tbody>
-            </table>
-          </main>
-    </body>
+            </thead>
+            <tbody id="ride-table-body">
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+            </tbody>
+        </table>
+    </main>
+    <script>document.addEventListener('DOMContentLoaded', displayLoggedInUserName);</script>
+</body>
 </html>

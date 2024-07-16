@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="/client/css/style-edit-user.css">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <img src="/client/image/carro_logo.png" alt="Aventones Logo">
+                <span>AVENTONES</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="#">Rides</a></li>
+                    <li><a href="view_bookings.html">Bookings</a></li>
+                </ul>
+            </nav>
+            <div class="user-icon">
+                <img src="/client/image/user.png" alt="User Icon">
+            </div>
+            <div class="user-info">
+                <span id="user-name"></span>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>Edit Profile</h1>
+            <form id="userForm" action="/api/user" method="post" onsubmit="updateUser(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="first_name" name="first_name" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="last_name" name="last_name" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="cedula" name="cedula" placeholder="Cedula">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="birthday" name="birthday" placeholder="Birthday">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="repeat-password" name="repeat-password" placeholder="Repeat Password">
+                    </div>
+                </div>
+                <div id="password-error" class="error-message" style="color: red; font-size: 12px; margin-bottom: 15px;"></div>
+                <div class="form-group">
+                    <input type="text" id="address" name="address" placeholder="Address" >
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="country" name="country" placeholder="Country">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="state" name="state" placeholder="State">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="city" name="city" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="phone" name="phone" placeholder="Phone Number">
+                        <input type="hidden" id="role" name="role" value="user">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Save</button>
+                    <button type="button" onclick="window.location.href='Home.html'">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

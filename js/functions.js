@@ -109,27 +109,31 @@ async function getRideById(rideId){
 
 async function deleteRide(rideId) {
   try {
-    console.log('rideId:', rideId);
-    const response = await fetch(`http://localhost:3001/api/rides/?id=${rideId}`, { // Corrección aquí
-          method: "DELETE",
-          headers: {
-              "Content-Type": "application/json",
-          },
-      });
+    console.log('Deleting ride with ID:', rideId);
+    const response = await fetch(`http://localhost:3001/api/rides/?_id:${rideId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error: ${response.status} ${response.statusText} - ${errorText}`);
+    }
 
-      // No necesitas convertir la respuesta a JSON si no hay cuerpo en la respuesta DELETE
-      console.log("Ride deleted successfully");
+    console.log("Ride deleted successfully");
 
-      // Opcionalmente, eliminar la fila del ride eliminado de la tabla
-      document.getElementById(`ride-${rideId}`).remove();
-      return true; // Retornar true para indicar que la eliminación fue exitosa
+    // Opcionalmente, eliminar la fila del ride eliminado de la tabla
+    const rideElement = document.getElementById(`ride-${rideId}`);
+    if (rideElement) {
+      rideElement.remove();
+    }
+
+    return true; // Retornar true para indicar que la eliminación fue exitosa
   } catch (error) {
-      console.error("Error deleting ride:", error);
-      return false; // Retornar false para indicar que hubo un error
+    console.error("Error deleting ride:", error.message);
+    return false; // Retornar false para indicar que hubo un error
   }
 }
 

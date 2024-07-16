@@ -7,6 +7,37 @@ function assignEditEvents() {
       });
     }
   }
+  async function getRides() {
+    const response = await fetch("http://localhost:3001/api/rides", {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  
+    const rides = await response.json();
+  
+    if (rides) {
+      const tableBody = document.getElementById('ride-table-body');
+      tableBody.innerHTML = '';
+  
+      rides.forEach(ride => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${ride.arriveTo}</td>
+          <td>${ride.departureFrom}</td>
+          <td>${ride.seats}</td>
+          <td>${ride.car}</td>
+          <td>${ride.fee}</td>
+          <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
+        `;
+        tableBody.appendChild(row);
+      });
+  
+      assignEditEvents();
+    }
+  }
+  
   
   async function createUser(event) {
     event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
@@ -25,6 +56,7 @@ function assignEditEvents() {
       city: document.getElementById('city').value,
       role: document.getElementById('role').value
     }
+    console.log(user.role);
   
     const response = await fetch("http://localhost:3001/api/user", {
       method: "POST",

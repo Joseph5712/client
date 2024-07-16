@@ -41,36 +41,46 @@ function assignEditEvents() {
     }
   }
 
-async function getRides() {
-  const response = await fetch("http://localhost:3001/api/rides", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const rides = await response.json();
-
-  if (rides) {
-    const tableBody = document.getElementById("ride-table-body");
-    tableBody.innerHTML = "";
-
-    rides.forEach((ride) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-          <td>${ride.departureFrom}</td>  
-          <td>${ride.arriveTo}</td>
-          <td>${ride.seats}</td>
-          <td>${ride.vehicleDetails.make}</td>
-          <td>${ride.fee}</td>
-          <td><a href="#" class="edit_button" id="${ride._id}">Edit</a> | <a class="delete_button" onclick="${deleteRide(ride._id)}">Delete</a></td>
-        `;
-      tableBody.appendChild(row);
+  async function getRides() {
+    const userId = localStorage.getItem('userId'); // Obtén el userId del localStorage
+  
+    if (!userId) {
+      console.error("User ID not found in localStorage");
+      return;
+    }
+  
+    const response = await fetch(`http://localhost:3001/api/rides`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-
-    assignEditEvents();
+  
+    const rides = await response.json();
+  
+    if (rides) {
+      const userRides = rides.filter(ride => ride.user._id === userId);
+  
+      const tableBody = document.getElementById("ride-table-body");
+      tableBody.innerHTML = "";
+  
+      userRides.forEach((ride) => {
+        const row = document.createElement("tr");
+        row.id = `ride-${ride._id}`;
+        row.innerHTML = `
+            <td>${ride.departureFrom}</td>  
+            <td>${ride.arriveTo}</td>
+            <td>${ride.seats}</td>
+            <td>${ride.vehicleDetails.make}</td>
+            <td>${ride.fee}</td>
+            <td><a href="#" class="edit_button" id="${ride._id}">Edit</a> | <a href="#" class="delete_button" onclick="deleteRide('${ride._id}')">Delete</a></td>
+          `;
+        tableBody.appendChild(row);
+      });
+  
+      assignEditEvents();
+    }
   }
-}
 
 async function getRideById(rideId){
   const response =await fetch("http://localhost:3001/api/rides/?id=${rideId}",{
@@ -100,7 +110,7 @@ async function getRideById(rideId){
 async function deleteRide(rideId) {
   try {
     console.log('rideId:', rideId);
-    const response = await fetch("http://localhost:3001/api/rides/?id=${rideId}", {
+    const response = await fetch(`http://localhost:3001/api/rides/?id=${rideId}`, { // Corrección aquí
           method: "DELETE",
           headers: {
               "Content-Type": "application/json",
@@ -111,16 +121,18 @@ async function deleteRide(rideId) {
           throw new Error(`Error: ${response.statusText}`);
       }
 
-      const result = await response.json();
-      console.log("Ride deleted successfully:", result);
+      // No necesitas convertir la respuesta a JSON si no hay cuerpo en la respuesta DELETE
+      console.log("Ride deleted successfully");
 
-      // Optionally, remove the deleted ride's row from the table
+      // Opcionalmente, eliminar la fila del ride eliminado de la tabla
       document.getElementById(`ride-${rideId}`).remove();
-      return result;
+      return true; // Retornar true para indicar que la eliminación fue exitosa
   } catch (error) {
       console.error("Error deleting ride:", error);
+      return false; // Retornar false para indicar que hubo un error
   }
 }
+
 
 async function createUser(event) {
   event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
@@ -184,7 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // functions.js
-async function login() {
+async function login(event) {
+  
+
   try {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -199,22 +213,32 @@ async function login() {
 
     if (response.ok) {
       const data = await response.json();
-      alert(`Login successful for ${data.user.email}`);
-      // Aquí podrías redirigir al usuario al dashboard u otra página
+      console.log(data);
+
+      if (data.user && data.user._id) {
+        alert(`Login successful for ${data.user.email}`);
+        // Almacenar el userId y el rol en el local storage
+        localStorage.setItem('userId', data.user._id);
+        localStorage.setItem('userRole', data.user.role);
+
+        // Redirigir según el rol del usuario
+        switch (data.user.role) {
+          case 'driver':
+            window.location.href = 'rides.html';
+            break;
+          case 'user':
+            window.location.href = 'Home.html';
+            break;
+        } 
+      } else {
+        console.error("User ID is missing in the response");
+        alert("Login failed: User ID is missing");
+      }
     } else {
       const errorData = await response.json();
+      console.log("Login failed response:", errorData);
       alert(`Login failed: ${errorData.error}`);
     }
-      if (response.ok) {
-          const data = await response.json();
-          alert(`Login successful for ${data.user.email}`);
-          // Almacenar el userId en el local storage
-          localStorage.setItem('userId', data.user.id);
-          // Aquí podrías redirigir al usuario al dashboard u otra página
-      } else {
-          const errorData = await response.json();
-          alert(`Login failed: ${errorData.error}`);
-      }
   } catch (error) {
     console.error("Error during login:", error);
     alert("Login failed: Internal error");

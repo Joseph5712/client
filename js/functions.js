@@ -23,7 +23,7 @@ function assignEditEvents() {
       country: document.getElementById('country').value,
       state: document.getElementById('state').value,
       city: document.getElementById('city').value,
-      role: 'client'
+      role: document.getElementById('role').value
     }
   
     const response = await fetch("http://localhost:3001/api/user", {
@@ -45,6 +45,8 @@ function assignEditEvents() {
     }
   
   }
+
+
 
   document.addEventListener('DOMContentLoaded', function () {
     const password = document.getElementById('password');

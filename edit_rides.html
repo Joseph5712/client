@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Ride</title>
+    <link rel="stylesheet" href="/client/css/style-edit-rides.css">
+    <script src="/client/js/functions.js" defer></script>
+    <script src="\js\functions.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <img src="/client/image/carro_logo.png" alt="Aventones Logo">
+                <span>AVENTONES</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="/client/rides.html">Rides</a></li>
+                    <li><a href="#">Bookings</a></li>
+                </ul>
+            </nav>
+            <div class="search-container">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-info">
+                <span id="user-name"></span>
+            </div>
+            <div class="user-icon" onclick="toggleMenu()">
+                <img src="/client/image/user.png" alt="User Icon">
+                <div id="user-menu" class="user-menu">
+                    <ul>
+                        <li><a href="#">Settings</a></li>
+                        <li><a href="#" onclick="logout()">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="title-box">
+                <h1 class="title">New Ride</h1>
+            </div>
+
+            <form id="rideForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="departure" name="departure" placeholder="Departure from">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="arrived" name="arrived" placeholder="Arrived to">
+                    </div>
+                </div>
+                <label>Days</label>
+                <div class="days">
+                    <label><input type="checkbox" id="mon" name="days" value="mon"> Mon</label>
+                    <label><input type="checkbox" id="tue" name="days" value="tue"> Tue</label>
+                    <label><input type="checkbox" id="wed" name="days" value="wed"> Wed</label>
+                    <label><input type="checkbox" id="thu" name="days" value="thu"> Thu</label>
+                    <label><input type="checkbox" id="fri" name="days" value="fri"> Fri</label>
+                    <label><input type="checkbox" id="sat" name="days" value="sat"> Sat</label>
+                    <label><input type="checkbox" id="sun" name="days" value="sun"> Sun</label>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="time" name="time" placeholder="Time">
+                    <input type="number" id="seats" name="seats" min="1" max="32" placeholder="Seats">
+                    <input type="number" id="fee" name="fee" min="0" placeholder="Fee">
+                </div>
+
+                <fieldset class="vehicle-details">
+                    <legend>Vehicle Details</legend>
+                    <div class="vehicle-row">
+                        <select id="make" name="make" aria-placeholder="Make">
+                            <option value="Nissan">Nissan</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Ford">Ford</option>
+                            <!-- se puede usar un api para obtener varios nombres de autos -->
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="vehicle-row">
+                            <input type="text" id="model" name="model" placeholder="Model">
+                        </div>
+                        <div class="vehicle-row">
+                            <input type="number" id="year" name="year" min="1900" placeholder="Year">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='rides.html'">Cancel</button>
+                    <button type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

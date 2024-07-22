@@ -83,16 +83,28 @@ function assignEditEvents() {
     }
   }
 //se obtiene un ride con si id especifico
-async function getRideById(rideId){
-  const response =await fetch("http://localhost:3001/api/rides/?id=${rideId}",{
+// ride.js
+async function getRideById(rideId) {
+  const response = await fetch(`http://localhost:3001/api/rides/?id=${rideId}`, {
     method: "GET",
     headers: {
-      "Content-Type":"application/json",
+      "Content-Type": "application/json",
     },
   });
 
   const ride = await response.json();
-  if(ride){
+  if (ride) {
+    // Almacenar los detalles del ride en localStorage
+    localStorage.setItem('ride', JSON.stringify(ride));
+    // Redirigir a la página donde quieres cargar los detalles del ride
+    window.location.href = 'aedit_rides.html';
+  }
+}
+
+function loadRideDetails() {
+  // Recuperar los detalles del ride de localStorage
+  const ride = JSON.parse(localStorage.getItem('ride'));
+  if (ride) {
     document.getElementById('departure').value = ride.departureFrom;
     document.getElementById('arrived').value = ride.arriveTo;
     document.getElementById('time').value = ride.time;
@@ -103,15 +115,20 @@ async function getRideById(rideId){
     document.getElementById('year').value = ride.vehicleDetails.year;
     ride.days.forEach(day => {
       document.getElementById(day).checked = true;
-  });
+    });
   }
-
 }
+
+// Cargar los detalles del ride al cargar la página
+window.onload = function() {
+  loadRideDetails();
+};
+
 
 async function deleteRide(rideId) {
   try {
     console.log('Deleting ride with ID:', rideId);
-    const response = await fetch(`http://localhost:3001/api/rides/?_id:${rideId}`, {
+    const response = await fetch(`http://localhost:3001/api/rides/?id=${rideId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

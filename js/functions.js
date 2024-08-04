@@ -41,119 +41,6 @@ function assignEditEvents() {
     }
   }
 
-  //se muestran los rides
-  async function getRides() {
-    const userId = localStorage.getItem('userId'); // Obtén el userId del localStorage
-  
-    if (!userId) {
-      console.error("User ID not found in localStorage");
-      return;
-    }
-  
-    const response = await fetch(`http://localhost:3001/api/rides`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  
-    const rides = await response.json();
-  
-    if (rides) {
-      const userRides = rides.filter(ride => ride.user._id === userId);
-  
-      const tableBody = document.getElementById("ride-table-body");
-      tableBody.innerHTML = "";
-  
-      userRides.forEach((ride) => {
-        const row = document.createElement("tr");
-        row.id = `ride-${ride._id}`;
-        row.innerHTML = `
-            <td>${ride.departureFrom}</td>  
-            <td>${ride.arriveTo}</td>
-            <td>${ride.seats}</td>
-            <td>${ride.vehicleDetails.make}</td>
-            <td>${ride.fee}</td>
-            <td><a href="#" class="edit_button" id="${ride._id}">Edit</a> | <a href="#" class="delete_button" onclick="deleteRide('${ride._id}')">Delete</a></td>
-          `;
-        tableBody.appendChild(row);
-      });
-  
-      assignEditEvents();
-    }
-  }
-//se obtiene un ride con si id especifico
-// ride.js
-async function getRideById(rideId) {
-  const response = await fetch(`http://localhost:3001/api/rides/?id=${rideId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const ride = await response.json();
-  if (ride) {
-    // Almacenar los detalles del ride en localStorage
-    localStorage.setItem('ride', JSON.stringify(ride));
-    // Redirigir a la página donde quieres cargar los detalles del ride
-    window.location.href = 'aedit_rides.html';
-  }
-}
-
-function loadRideDetails() {
-  // Recuperar los detalles del ride de localStorage
-  const ride = JSON.parse(localStorage.getItem('ride'));
-  if (ride) {
-    document.getElementById('departure').value = ride.departureFrom;
-    document.getElementById('arrived').value = ride.arriveTo;
-    document.getElementById('time').value = ride.time;
-    document.getElementById('seats').value = ride.seats;
-    document.getElementById('fee').value = ride.fee;
-    document.getElementById('make').value = ride.vehicleDetails.make;
-    document.getElementById('model').value = ride.vehicleDetails.model;
-    document.getElementById('year').value = ride.vehicleDetails.year;
-    ride.days.forEach(day => {
-      document.getElementById(day).checked = true;
-    });
-  }
-}
-
-// Cargar los detalles del ride al cargar la página
-window.onload = function() {
-  loadRideDetails();
-};
-
-
-async function deleteRide(rideId) {
-  try {
-    console.log('Deleting ride with ID:', rideId);
-    const response = await fetch(`http://localhost:3001/api/rides/?id=${rideId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Error: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    console.log("Ride deleted successfully");
-
-    // Opcionalmente, eliminar la fila del ride eliminado de la tabla
-    const rideElement = document.getElementById(`ride-${rideId}`);
-    if (rideElement) {
-      rideElement.remove();
-    }
-
-    return true; // Retornar true para indicar que la eliminación fue exitosa
-  } catch (error) {
-    console.error("Error deleting ride:", error.message);
-    return false; // Retornar false para indicar que hubo un error
-  }
-}
 
 //crear user(depende del formulario, se crea el user con rol: driver o client)
 async function createUser(event) {
@@ -283,11 +170,11 @@ async function createRide(event) {
   let ride = {
       departureFrom: document.getElementById('departure').value,
       arriveTo: document.getElementById('arrived').value,
-      days: days.value,
+      days: days,
       time: document.getElementById('time').value,
       seats: document.getElementById('seats').value,
       fee: document.getElementById('fee').value,
-      vehicleDetails: {
+      vehicleDetails: { 
           make: document.getElementById('make').value,
           model: document.getElementById('model').value,
           year: document.getElementById('year').value
@@ -408,6 +295,7 @@ async function getLoggedInUserInfo() {
 
 //muuestra los datos del usuario en el html
 async function displayLoggedInUserName() {
+
   const userNameElement = document.getElementById('user-name');
   const userData = await getLoggedInUserInfo();
 
@@ -417,9 +305,43 @@ async function displayLoggedInUserName() {
       userNameElement.textContent = 'Guest';
   }
 }
+
 // Llama a la función para mostrar el nombre de usuario al cargar la página
 document.addEventListener('DOMContentLoaded', displayLoggedInUserName);
 
+
+
+
+function loadUserDetails() {
+  try {
+      const userData = localStorage.getItem('user');
+      const userId = localStorage.getItem('userId');
+      
+      if (userData) {
+          const user = JSON.parse(userData);
+          
+          if (user) {
+              document.getElementById('first_name').value = user.first_name;
+              document.getElementById('last_name').value = user.last_name;
+              document.getElementById('cedula').value = user.cedula;
+              document.getElementById('birthday').value = user.birthday;
+              document.getElementById('email').value = user.email;
+              document.getElementById('phone_number').value = user.phone_number;
+              document.getElementById('address').value = user.address;
+              document.getElementById('country').value = user.country;
+              document.getElementById('state').value = user.state;
+              document.getElementById('city').value = user.city;
+              
+          } else {
+              console.error('El objeto user no tiene las propiedades esperadas');
+          }
+      } else {
+          console.log('No hay datos de user en localStorage');
+      }
+  } catch (error) {
+      console.error('Error al cargar los detalles del user:', error);
+  }
+}
 
 //cerrar sesion al presionar el boton logout
 function logout() {

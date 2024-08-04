@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Ride</title>
     <link rel="stylesheet" href="/client/css/style-edit-rides.css">
-    <script src="/client/js/functions.js" defer></script>
-    <script src="\js\functions.js"></script>
+    <script src="/client/js/edit_functions.js" defer></script>
+    
 </head>
 
 <body>
@@ -48,7 +48,8 @@
                 <h1 class="title">New Ride</h1>
             </div>
 
-            <form id="rideForm">
+            <form id="rideForm" onsubmit="updateRide(event)">
+                <!-- Formulario con los campos necesarios -->
                 <div class="form-row">
                     <div class="form-group">
                         <input type="text" id="departure" name="departure" placeholder="Departure from">
@@ -72,7 +73,7 @@
                     <input type="number" id="seats" name="seats" min="1" max="32" placeholder="Seats">
                     <input type="number" id="fee" name="fee" min="0" placeholder="Fee">
                 </div>
-
+            
                 <fieldset class="vehicle-details">
                     <legend>Vehicle Details</legend>
                     <div class="vehicle-row">
@@ -80,7 +81,6 @@
                             <option value="Nissan">Nissan</option>
                             <option value="Toyota">Toyota</option>
                             <option value="Ford">Ford</option>
-                            <!-- se puede usar un api para obtener varios nombres de autos -->
                         </select>
                     </div>
                     <div class="form-row">
@@ -92,12 +92,13 @@
                         </div>
                     </div>
                 </fieldset>
-
+            
                 <div class="form-actions">
                     <button type="button" onclick="window.location.href='rides.html'">Cancel</button>
-                    <button type="submit">Create</button>
+                    <button type="submit">Save</button>
                 </div>
             </form>
+            
         </div>
     </main>
 </body>

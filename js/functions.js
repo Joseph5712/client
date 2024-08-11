@@ -251,7 +251,7 @@ async function searchRides(event) {
         <td>${ride.seats}</td>
         <td>${ride.vehicleDetails.make}</td>
         <td>${ride.fee}</td>
-        <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
+        <td><a href="#" class="request_button" id="${ride._id}">Request</a></td>
       `;
       tableBody.appendChild(row);
     });

@@ -32,7 +32,8 @@ function assignEditEvents() {
           
           
           
-          <td><a href="#" class="edit_button" id="${ride._id}">Edit</a></td>
+          <td><a href="#" class="accept_button" id="accept" onclick="acceptRide('${ride._id}')" ">Accept</a> | <a href="#" class="reject_button" onclick="rejectRide('${ride._id}')">Reject</a></td>
+          
         `;
         tableBody.appendChild(row);
       });

@@ -8,39 +8,43 @@ function assignEditEvents() {
     });
   }
 }
+
   //se muestra un ride con un id especifico del user(1 userDrive puede tener varios rides)
-  async function getRides_user() {
-    const response = await fetch("http://localhost:3001/api/rides", {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  
-    const rides = await response.json();
-  
-    if (rides) {
-      const tableBody = document.getElementById('ride-table-body');
-      tableBody.innerHTML = '';
-  
-      rides.forEach(ride => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${ride.user ? ride.user.first_name + ' ' + ride.user.last_name : 'N/A'}</td>
-          <td>${ride.departureFrom}</td>
-          <td>${ride.arriveTo}</td>
-          
-          
-          
-          <td><a href="#" class="accept_button" id="accept" onclick="acceptRide('${ride._id}')" ">Accept</a> | <a href="#" class="reject_button" onclick="rejectRide('${ride._id}')">Reject</a></td>
-          
-        `;
-        tableBody.appendChild(row);
-      });
-  
-      assignEditEvents();
+  async function getBookings_user() {
+    const driverId = localStorage.getItem('userId'); // Recupera el ID del usuario logueado desde el localStorage
+
+    if (!driverId) {
+        console.error('No driver ID found in localStorage');
+        return;
     }
-  }
+
+    const response = await fetch(`http://localhost:3001/api/bookings?driverId=${driverId}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const bookings = await response.json();
+
+    if (bookings) {
+        const tableBody = document.getElementById('booking-table-body');
+        tableBody.innerHTML = '';
+
+        bookings.forEach(booking => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${booking.user ? booking.user.first_name + ' ' + booking.user.last_name : 'N/A'}</td>
+                <td>${booking.ride ? booking.ride.departureFrom : 'N/A'}</td>
+                <td>${booking.ride ? booking.ride.arriveTo : 'N/A'}</td>
+                <td><a href="#" class="accept_button" id="accept" onclick="acceptBooking('${booking._id}')">Accept</a> | <a href="#" class="reject_button" onclick="rejectBooking('${booking._id}')">Reject</a></td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+}
+
+
 
 
 //crear user(depende del formulario, se crea el user con rol: driver o client)

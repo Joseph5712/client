@@ -9,7 +9,62 @@ function assignEditEvents() {
   }
 }
 
-  //se muestra un ride con un id especifico del user(1 userDrive puede tener varios rides)
+
+
+
+async function getClientBookings() {
+  const userId = localStorage.getItem('userId'); // Obtener el userId del localStorage
+  
+  if (!userId) {
+    console.error("User ID not found in localStorage");
+    return;
+  }
+  
+  try {
+      const response = await fetch("http://localhost:3001/api/bookingsClient", {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+          },
+      });
+
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const bookings = await response.json();
+      console.log(bookings);
+
+      // Filtrar los bookings para mostrar solo los del usuario logueado
+      const clientBookings = bookings.filter(booking => booking.user._id === userId);
+
+      const tableBody = document.getElementById("ride-table-body");
+      tableBody.innerHTML = "";
+
+      clientBookings.forEach((booking) => {
+          const row = document.createElement("tr");
+          row.id = `booking-${booking._id}`;
+          row.innerHTML = `
+              <td>${booking.ride.departureFrom}</td>  
+              <td>${booking.ride.arriveTo}</td>
+              <td>${booking.ride.seats}</td>
+              <td>${booking.ride.vehicleDetails.make}</td>
+              <td>${booking.ride.fee}</td>
+              <td><a href="#" class="cancel_button" onclick="cancelBooking('${booking._id}')">Cancel</a></td>
+          `;
+          tableBody.appendChild(row);
+      });
+  } catch (error) {
+      console.error('Error fetching client bookings:', error.message);
+      alert("Error fetching client bookings: " + error.message);
+  }
+}
+
+
+
+
+
+  //se muestra los bookings del usuario que haya hecho un request del ride del driver que la
   async function getBookings_user() {
     const driverId = localStorage.getItem('userId'); // Recupera el ID del usuario logueado desde el localStorage
 
@@ -212,14 +267,10 @@ async function createRide(event) {
 
 //buscador rides
 async function searchRides(event) {
-  
-
-  // Obtener valores del formulario
   const from = document.getElementById('from').value;
   const to = document.getElementById('to').value;
   const days = Array.from(document.querySelectorAll('input[name="days"]:checked')).map(input => input.value);
-  
-  // Construir objeto de búsqueda
+
   const searchParams = {
     from,
     to,
@@ -241,11 +292,9 @@ async function searchRides(event) {
 
     const rides = await response.json();
 
-    // Limpiar la tabla antes de mostrar los resultados
     const tableBody = document.getElementById('ride-table-body');
     tableBody.innerHTML = '';
 
-    // Mostrar los rides encontrados en la tabla
     rides.forEach(ride => {
       const row = document.createElement('tr');
       row.innerHTML = `
@@ -255,7 +304,7 @@ async function searchRides(event) {
         <td>${ride.seats}</td>
         <td>${ride.vehicleDetails.make}</td>
         <td>${ride.fee}</td>
-        <td><a href="#" class="request_button" id="${ride._id}">Request</a></td>
+        <td><a href="#" class="request_button" id="${ride._id}" onclick="requestRide('${ride._id}')">Request</a></td>
       `;
       tableBody.appendChild(row);
     });
@@ -264,6 +313,40 @@ async function searchRides(event) {
     alert("Error searching rides: " + error.message);
   }
 }
+
+async function requestRide(rideId) {
+  const userId = localStorage.getItem('userId'); // Obtener el ID del usuario logueado del local storage
+
+  const bookingData = {
+      userId,
+      rideId
+  };
+
+  try {
+      const response = await fetch("http://localhost:3001/api/bookings", {
+          method: "POST",
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bookingData)
+      });
+
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      alert("Ride requested successfully!");
+      console.log('Booking result:', result);
+  } catch (error) {
+      console.error('Error requesting ride:', error.message);
+      alert("Error requesting ride: " + error.message);
+  }
+}
+
+
+
 
 // Llama a la función getRides al cargar la página
 document.addEventListener("DOMContentLoaded", getRides);

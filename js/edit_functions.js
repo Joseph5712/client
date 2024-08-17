@@ -11,12 +11,12 @@ function assignEditEvents() {
   //se muestran los rides
   async function getRides() {
     const userId = localStorage.getItem('userId'); // Obtén el userId del localStorage
-  
+    
     if (!userId) {
       console.error("User ID not found in localStorage");
       return;
     }
-  
+    
     const response = await fetch(`http://localhost:3001/api/rides`, {
       method: "GET",
       headers: {

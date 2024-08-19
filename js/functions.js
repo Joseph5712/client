@@ -191,10 +191,10 @@ async function login(event) {
         // Redirigir segun el rol del usuario
         switch (data.user.role) {
           case 'driver':
-            window.location.href = 'rides.html';
+            window.location.href = '../rides/rides_drivers.html';
             break;
           case 'user':
-            window.location.href = 'Home.html';
+            window.location.href = '../rides/Home.html';
             break;
         } 
       } else {
@@ -434,5 +434,5 @@ function loadUserDetails() {
 //cerrar sesion al presionar el boton logout
 function logout() {
   localStorage.removeItem('userId'); 
-  window.location.href = 'login.html'; 
+  window.location.href = '../auth/login.html'; 
 }

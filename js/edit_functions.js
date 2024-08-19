@@ -183,7 +183,7 @@ function loadRideDetails() {
         console.log("Ride updated:", rideData);
         alert("Ride updated successfully");
         // Redirigir a otra página si es necesario
-        window.location.href = 'rides.html';
+        window.location.href = 'rides_drivers.html';
     } catch (error) {
         console.error('Error updating ride:', error.message);
         alert("Error updating ride: " + error.message);
@@ -223,7 +223,7 @@ async function deleteRide(rideId) {
 
 function logout() {
     localStorage.removeItem('userId'); 
-    window.location.href = 'login.html'; 
+    window.location.href = '../auth/login.html'; 
   }
 
   

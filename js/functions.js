@@ -9,9 +9,6 @@ function assignEditEvents() {
   }
 }
 
-
-
-
 async function getClientBookings() {
   const userId = localStorage.getItem('userId'); // Obtener el userId del localStorage
   

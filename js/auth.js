@@ -35,9 +35,9 @@ async function createUser(event) {
     }
 }
 
-// Validar login
+//se valida el login 
 async function login(event) {
-    event.preventDefault();
+
 
     try {
         const email = document.getElementById("email").value;
@@ -56,9 +56,11 @@ async function login(event) {
 
             if (data.user && data.user._id) {
                 alert(`Login successful for ${data.user.email}`);
+                // Almacenar el userId local storage
                 localStorage.setItem('userId', data.user._id);
                 localStorage.setItem('userRole', data.user.role);
 
+                // Redirigir segun el rol del usuario
                 switch (data.user.role) {
                     case 'driver':
                         window.location.href = '../rides/rides_drivers.html';
@@ -66,7 +68,7 @@ async function login(event) {
                     case 'user':
                         window.location.href = '../rides/Home.html';
                         break;
-                } 
+                }
             } else {
                 console.error("User ID is missing in the response");
                 alert("Login failed: User ID is missing");
@@ -86,7 +88,7 @@ async function login(event) {
 async function getLoggedInUserInfo() {
     try {
         const userId = localStorage.getItem('userId');
-        
+
         if (!userId) {
             throw new Error('User ID not found in localStorage');
         }
@@ -127,10 +129,10 @@ function loadUserDetails() {
     try {
         const userData = localStorage.getItem('user');
         const userId = localStorage.getItem('userId');
-        
+
         if (userData) {
             const user = JSON.parse(userData);
-            
+
             if (user) {
                 document.getElementById('first_name').value = user.first_name;
                 document.getElementById('last_name').value = user.last_name;
@@ -142,7 +144,7 @@ function loadUserDetails() {
                 document.getElementById('country').value = user.country;
                 document.getElementById('state').value = user.state;
                 document.getElementById('city').value = user.city;
-                
+
             } else {
                 console.error('El objeto user no tiene las propiedades esperadas');
             }
@@ -156,8 +158,8 @@ function loadUserDetails() {
 
 // Cerrar sesión
 function logout() {
-    localStorage.removeItem('userId'); 
-    window.location.href = '../auth/login.html'; 
+    localStorage.removeItem('userId');
+    window.location.href = '../auth/login.html';
 }
 
 document.addEventListener('DOMContentLoaded', displayLoggedInUserName);

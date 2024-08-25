@@ -36,53 +36,41 @@ async function createUser(event) {
 }
 
 //se valida el login 
-async function login(event) {
+async function login() {
+    let userLogin =  {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    };
 
+    const response = await fetch("http://localhost:3001/api/session", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userLogin)
+    });
 
-    try {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+    if (response && response.status == 201) {
+        const tokenData = await response.json();
+        console.log('Token saved', tokenData);
 
-        const response = await fetch("http://localhost:3001/api/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        });
+        // Guardar el token en sessionStorage
+        sessionStorage.setItem('token', tokenData.token);
+        
+        alert(`Welcome ${tokenData.user}`);
 
-        if (response.ok) {
-            const data = await response.json();
-
-            if (data.user && data.user._id) {
-                alert(`Login successful for ${data.user.email}`);
-                // Almacenar el userId local storage
-                localStorage.setItem('userId', data.user._id);
-                localStorage.setItem('userRole', data.user.role);
-
-                // Redirigir segun el rol del usuario
-                switch (data.user.role) {
-                    case 'driver':
-                        window.location.href = '../rides/rides_drivers.html';
-                        break;
-                    case 'user':
-                        window.location.href = '../rides/Home.html';
-                        break;
-                }
-            } else {
-                console.error("User ID is missing in the response");
-                alert("Login failed: User ID is missing");
-            }
+        // Redirigir según el rol del usuario
+        if (tokenData.role === 'driver') {
+            document.location.href = '../rides/rides_drivers.html'; // Página del conductor
         } else {
-            const errorData = await response.json();
-            console.log("Login failed response:", errorData);
-            alert(`Login failed: ${errorData.error}`);
+            document.location.href = '../rides/Home.html'; // Página del usuario
         }
-    } catch (error) {
-        console.error("Error during login:", error);
-        alert("Login failed: Internal error");
+    } else {
+        alert("Login failed. Please check your credentials and try again.");
     }
 }
+
+
 
 // Obtener datos del usuario logueado
 async function getLoggedInUserInfo() {

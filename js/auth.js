@@ -1,6 +1,6 @@
 // Crear usuario
 async function createUser(event) {
-    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+    
 
     let user = {
         first_name: document.getElementById("first_name").value,

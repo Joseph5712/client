@@ -112,8 +112,9 @@ async function requestRide(rideId) {
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+            // Verifica si la respuesta es texto y no JSON
+            const errorText = await response.text(); // Lee el texto de la respuesta
+            throw new Error(errorText || `HTTP error! Status: ${response.status}`);
         }
 
         const result = await response.json();
@@ -124,4 +125,5 @@ async function requestRide(rideId) {
         alert("Error requesting ride: " + error.message);
     }
 }
+
 

@@ -2,6 +2,13 @@
 async function createRide(event) {
     event.preventDefault();
 
+    const token = sessionStorage.getItem('token'); // Obtener el token desde sessionStorage
+
+    if (!token) {
+        console.error('No token found in sessionStorage');
+        return;
+    }
+    
     let days = {
         mon: document.getElementById('mon').checked,
         tue: document.getElementById('tue').checked,
@@ -23,15 +30,15 @@ async function createRide(event) {
             make: document.getElementById('make').value,
             model: document.getElementById('model').value,
             year: document.getElementById('year').value
-        },
-        userId: localStorage.getItem('userId') // Obtener el userId desde el local storage
+        }
     };
 
     try {
         let response = await fetch("http://localhost:3001/api/rides", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Incluir el token en los encabezados
             },
             body: JSON.stringify(ride)
         });
@@ -43,37 +50,47 @@ async function createRide(event) {
         let rideData = await response.json();
         console.log("Ride created:", rideData);
         alert("Ride created successfully");
+        // Redirigir al usuario después de crear el ride, si es necesario
     } catch (error) {
         console.error('Error creating ride:', error.message);
         alert("Error creating ride: " + error.message);
     }
 }
 
+
 // Obtener rides del usuario logueado
 async function getRides() {
-    const userId = localStorage.getItem('userId');
+    const token = sessionStorage.getItem('token'); // Obtener el token desde sessionStorage
     
-    if (!userId) {
-        console.error("User ID not found in localStorage");
+    if (!token) {
+        console.error("No token found in sessionStorage");
         return;
     }
     
-    const response = await fetch(`http://localhost:3001/api/rides`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
+    try {
+        const response = await fetch(`http://localhost:3001/api/rides`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Incluir el token en los encabezados
+            },
+        });
 
-    const rides = await response.json();
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-    if (rides) {
-        const userRides = rides.filter(ride => ride.user._id === userId);
+        const rides = await response.json();
 
         const tableBody = document.getElementById("ride-table-body");
+        if (!tableBody) {
+            //console.error("Element with ID 'ride-table-body' not found.");
+            return;
+        }
+
         tableBody.innerHTML = "";
 
-        userRides.forEach((ride) => {
+        rides.forEach((ride) => {
             const row = document.createElement("tr");
             row.id = `ride-${ride._id}`;
             row.innerHTML = `
@@ -87,9 +104,14 @@ async function getRides() {
             tableBody.appendChild(row);
         });
 
-        assignEditEvents();
+        
+    } catch (error) {
+        console.error('Error fetching rides:', error.message);
+        alert("Error fetching rides: " + error.message);
     }
 }
+
+
 
 // Obtener un ride por su ID
 async function getRideById(rideId) {
@@ -128,44 +150,6 @@ async function getRideById(rideId) {
 }
 
 // Cargar detalles del ride en el formulario
-function loadRideDetails() {
-    try {
-        const rideData = localStorage.getItem('ride');
-        const rideId = localStorage.getItem('rideId');
-        
-        if (rideData) {
-            const ride = JSON.parse(rideData);
-            
-            if (ride && ride.departureFrom && ride.arriveTo && ride.time && ride.seats && ride.fee && ride.vehicleDetails && ride.days) {
-                document.getElementById('departure').value = ride.departureFrom;
-                document.getElementById('arrived').value = ride.arriveTo;
-                document.getElementById('time').value = ride.time;
-                document.getElementById('seats').value = ride.seats;
-                document.getElementById('fee').value = ride.fee;
-                document.getElementById('make').value = ride.vehicleDetails.make;
-                document.getElementById('model').value = ride.vehicleDetails.model;
-                document.getElementById('year').value = ride.vehicleDetails.year;
-
-                if (ride.daysArray && Array.isArray(ride.daysArray)) {
-                    ride.daysArray.forEach(day => {
-                        const dayCheckbox = document.getElementById(day);
-                        if (dayCheckbox) {
-                            dayCheckbox.checked = true;
-                        }
-                    });
-                } else {
-                    console.error('El objeto ride no tiene un array de días esperado');
-                }
-            } else {
-                console.error('El objeto ride no tiene las propiedades esperadas');
-            }
-        } else {
-            console.log('No hay datos de ride en localStorage');
-        }
-    } catch (error) {
-        console.error('Error al cargar los detalles del ride:', error);
-    }
-}
 
 // Actualizar un ride
 async function updateRide(event) {
@@ -309,3 +293,31 @@ window.onload = function() {
 };
 
 document.addEventListener("DOMContentLoaded", getRides);
+
+
+// Cargar detalles del ride en el formulario
+function loadRideDetailsEdit() {
+    const rideData = localStorage.getItem('ride');
+    if (rideData) {
+        const ride = JSON.parse(rideData);
+        document.getElementById('departure').value = ride.departureFrom;
+        document.getElementById('arrived').value = ride.arriveTo;
+        document.getElementById('time').value = ride.time;
+        document.getElementById('seats').value = ride.seats;
+        document.getElementById('fee').value = ride.fee;
+        document.getElementById('make').value = ride.vehicleDetails.make;
+        document.getElementById('model').value = ride.vehicleDetails.model;
+        document.getElementById('year').value = ride.vehicleDetails.year;
+
+        // Configurar los días seleccionados
+        if (ride.days) {
+            document.getElementById('mon').checked = ride.days.mon;
+            document.getElementById('tue').checked = ride.days.tue;
+            document.getElementById('wed').checked = ride.days.wed;
+            document.getElementById('thu').checked = ride.days.thu;
+            document.getElementById('fri').checked = ride.days.fri;
+            document.getElementById('sat').checked = ride.days.sat;
+            document.getElementById('sun').checked = ride.days.sun;
+        }
+    }
+}

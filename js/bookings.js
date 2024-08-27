@@ -54,23 +54,28 @@ async function getClientBookings() {
 
 // Obtener bookings del driver logueado
 async function getBookings_user() {
-    const driverId = localStorage.getItem('userId'); // Recupera el ID del usuario logueado desde el localStorage
+    const token = sessionStorage.getItem('token'); // Obtener el token desde sessionStorage
 
-    if (!driverId) {
-        console.error('No driver ID found in localStorage');
+    if (!token) {
+        console.error('No token found in sessionStorage');
         return;
     }
 
-    const response = await fetch(`http://localhost:3001/api/bookings?driverId=${driverId}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+    try {
+        const response = await fetch(`http://localhost:3001/api/bookings`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Incluir el token en los encabezados
+            },
+        });
 
-    const bookings = await response.json();
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-    if (bookings) {
+        const bookings = await response.json();
+
         const tableBody = document.getElementById('booking-table-body');
         tableBody.innerHTML = '';
 
@@ -84,6 +89,9 @@ async function getBookings_user() {
             `;
             tableBody.appendChild(row);
         });
+    } catch (error) {
+        console.error('Error fetching bookings:', error.message);
+        alert("Error fetching bookings: " + error.message);
     }
 }
 

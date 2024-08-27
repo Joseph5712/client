@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/client/css/style-edit-rides.css">
     <script src="../js/auth.js"></script>
     <script src="../js/rides.js"></script>
-    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI7c2Ok3k1n81I6bbRLIbPmFfbVr_4x28&libraries=places"></script>
 </head>
 
 <body>
@@ -43,6 +43,7 @@
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
+
     <main>
         <div class="container">
             <div class="title-box">
@@ -50,14 +51,17 @@
             </div>
 
             <form id="rideForm">
+                <div id="map" style="height: 400px; width: 100%; margin-bottom: 20px;"></div>
+
                 <div class="form-row">
                     <div class="form-group">
-                        <input type="text" id="departure" name="departure" placeholder="Departure from">
+                        <input type="text" id="departure" name="departure" placeholder="Departure from" readonly>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="arrived" name="arrived" placeholder="Arrived to">
+                        <input type="text" id="arrived" name="arrived" placeholder="Arrived to" readonly>
                     </div>
                 </div>
+
                 <label>Days</label>
                 <div class="days">
                     <label><input type="checkbox" id="mon" name="days" value="mon"> Mon</label>
@@ -68,6 +72,7 @@
                     <label><input type="checkbox" id="sat" name="days" value="sat"> Sat</label>
                     <label><input type="checkbox" id="sun" name="days" value="sun"> Sun</label>
                 </div>
+
                 <div class="form-row">
                     <input type="text" id="time" name="time" placeholder="Time">
                     <input type="number" id="seats" name="seats" min="1" max="32" placeholder="Seats">
@@ -101,7 +106,137 @@
             </form>
         </div>
     </main>
+
+    <script>
+        let map;
+        let departureMarker;
+        let arrivedMarker;
+        let autocompleteDeparture;
+        let autocompleteArrived;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.397, lng: 150.644 }, // Ubicación inicial del mapa
+                zoom: 8,
+            });
+
+            // Configurar autocompletado
+            autocompleteDeparture = new google.maps.places.Autocomplete(
+                document.getElementById('departure'), { types: ['geocode'] });
+            autocompleteArrived = new google.maps.places.Autocomplete(
+                document.getElementById('arrived'), { types: ['geocode'] });
+
+            // Añadir un listener para cuando el usuario selecciona un lugar en "Departure"
+            autocompleteDeparture.addListener('place_changed', () => {
+                const place = autocompleteDeparture.getPlace();
+                if (place.geometry) {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(14);
+
+                    if (departureMarker) {
+                        departureMarker.setMap(null);
+                    }
+
+                    departureMarker = new google.maps.Marker({
+                        position: place.geometry.location,
+                        map: map,
+                        title: "Departure From",
+                        draggable: true
+                    });
+
+                    departureMarker.addListener('dragend', function(event) {
+                        document.getElementById("departure").value = place.formatted_address;
+                    });
+
+                    document.getElementById("departure").value = place.formatted_address;
+                }
+            });
+
+            // Añadir un listener para cuando el usuario selecciona un lugar en "Arrived"
+            autocompleteArrived.addListener('place_changed', () => {
+                const place = autocompleteArrived.getPlace();
+                if (place.geometry) {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(14);
+
+                    if (arrivedMarker) {
+                        arrivedMarker.setMap(null);
+                    }
+
+                    arrivedMarker = new google.maps.Marker({
+                        position: place.geometry.location,
+                        map: map,
+                        title: "Arrived To",
+                        draggable: true
+                    });
+
+                    arrivedMarker.addListener('dragend', function(event) {
+                        document.getElementById("arrived").value = place.formatted_address;
+                    });
+
+                    document.getElementById("arrived").value = place.formatted_address;
+                }
+            });
+
+            // También permitir la selección de ubicaciones haciendo clic en el mapa
+            map.addListener("click", (event) => {
+                if (!departureMarker) {
+                    departureMarker = new google.maps.Marker({
+                        position: event.latLng,
+                        map: map,
+                        title: "Departure From",
+                        draggable: true
+                    });
+
+                    departureMarker.addListener('dragend', function(event) {
+                        const geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({ location: event.latLng }, function(results, status) {
+                            if (status === 'OK') {
+                                document.getElementById("departure").value = results[0].formatted_address;
+                            }
+                        });
+                    });
+
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ location: event.latLng }, function(results, status) {
+                        if (status === 'OK') {
+                            document.getElementById("departure").value = results[0].formatted_address;
+                        }
+                    });
+
+                } else if (!arrivedMarker) {
+                    arrivedMarker = new google.maps.Marker({
+                        position: event.latLng,
+                        map: map,
+                        title: "Arrived To",
+                        draggable: true
+                    });
+
+                    arrivedMarker.addListener('dragend', function(event) {
+                        const geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({ location: event.latLng }, function(results, status) {
+                            if (status === 'OK') {
+                                document.getElementById("arrived").value = results[0].formatted_address;
+                            }
+                        });
+                    });
+
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ location: event.latLng }, function(results, status) {
+                        if (status === 'OK') {
+                            document.getElementById("arrived").value = results[0].formatted_address;
+                        }
+                    });
+                }
+            });
+        }
+
+        // Llamar a la función para inicializar el mapa cuando la página se carga
+        window.onload = initMap;
+
+        document.getElementById("rideForm").addEventListener("submit", createRide);
+    </script>
+
 </body>
-<script>document.getElementById("rideForm").addEventListener("submit", createRide);</script>
 
 </html>

@@ -1,33 +1,57 @@
 // Obtener bookings del cliente logueado
 async function getClientBookings() {
-    const token = sessionStorage.getItem('token'); // Obtener el token desde sessionStorage
-    console.log(token);
+    const token = sessionStorage.getItem('token');
+    
     if (!token) {
         console.error("No token found in sessionStorage");
         return;
     }
 
+    // Definir la consulta GraphQL
+    const query = `
+        query($userId: ID!) {
+            bookingsByUser(userId: $userId) {
+                _id
+                ride {
+                    departureFrom
+                    arriveTo
+                    seats
+                    vehicleDetails {
+                        make
+                    }
+                    fee
+                }
+            }
+        }
+    `;
+    
+    const userId = "yourUserId"; // Reemplaza "yourUserId" con el valor adecuado
+
     try {
-        const response = await fetch("http://localhost:3001/api/bookingsClient", {
-            method: "GET",
+        // Realizar la solicitud al servidor GraphQL
+        const response = await fetch('http://localhost:4000/graphql', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // Incluye el token en los encabezados
+                "Authorization": `Bearer ${token}`
             },
+            body: JSON.stringify({ query, variables: { userId } })
         });
 
         if (!response.ok) {
+            const errorDetail = await response.text();
+            console.error(`Error Detail: ${errorDetail}`);
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const bookings = await response.json();
-        console.log(bookings);
+        const result = await response.json();
+        const bookings = result.data.bookingsByUser;
 
         const tableBody = document.getElementById("ride-table-body");
         tableBody.innerHTML = "";
 
         bookings.forEach((booking) => {
-            if (booking.ride) {  // Verificar que booking.ride no sea null
+            if (booking.ride) {
                 const row = document.createElement("tr");
                 row.id = `booking-${booking._id}`;
                 row.innerHTML = `
@@ -48,6 +72,7 @@ async function getClientBookings() {
         alert("Error fetching client bookings: " + error.message);
     }
 }
+
 
 
 

@@ -67,29 +67,56 @@ async function getRides() {
         return;
     }
     
+    // Definir la consulta GraphQL
+    const query = `
+        query {
+            rides {
+                id
+                departureFrom
+                arriveTo
+                seats
+                vehicleDetails {
+                    make
+                }
+                fee
+            }
+        }
+    `;
+    
     try {
-        const response = await fetch(`http://localhost:3001/api/rides`, {
-            method: "GET",
+        // Realizar la solicitud al servidor GraphQL
+        const response = await fetch('http://localhost:4000/graphql', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // Incluir el token en los encabezados
+                "Authorization": `Bearer ${token}`, // Incluir el token en los encabezados
             },
+            body: JSON.stringify({ query }), // Enviar la consulta GraphQL
         });
 
+        // Verificar si la respuesta fue exitosa
         if (!response.ok) {
+            const errorDetail = await response.text();
+            console.error(`Error Detail: ${errorDetail}`);
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const rides = await response.json();
+        // Parsear el resultado de la respuesta
+        const result = await response.json();
+        console.log(result); // Para ver el resultado completo de la respuesta
+
+        const rides = result.data.rides;
 
         const tableBody = document.getElementById("ride-table-body");
         if (!tableBody) {
-            //console.error("Element with ID 'ride-table-body' not found.");
+            console.error("Element with ID 'ride-table-body' not found.");
             return;
         }
 
+        // Limpiar el cuerpo de la tabla antes de agregar nuevas filas
         tableBody.innerHTML = "";
 
+        // Agregar las rides a la tabla
         rides.forEach((ride) => {
             const row = document.createElement("tr");
             row.id = `ride-${ride._id}`;
@@ -104,12 +131,13 @@ async function getRides() {
             tableBody.appendChild(row);
         });
 
-        
     } catch (error) {
         console.error('Error fetching rides:', error.message);
         alert("Error fetching rides: " + error.message);
     }
 }
+
+
 
 
 

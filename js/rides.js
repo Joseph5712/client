@@ -107,7 +107,6 @@ async function getRides() {
         
     } catch (error) {
         console.error('Error fetching rides:', error.message);
-        alert("Error fetching rides: " + error.message);
     }
 }
 
@@ -288,9 +287,6 @@ async function searchRides(event) {
     }
 }
 
-window.onload = function() {
-    loadRideDetails();
-};
 
 document.addEventListener("DOMContentLoaded", getRides);
 

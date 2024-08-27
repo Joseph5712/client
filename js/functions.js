@@ -312,10 +312,10 @@ async function searchRides(event) {
 }
 
 async function requestRide(rideId) {
-  const userId = localStorage.getItem('userId'); // Obtener el ID del usuario logueado del local storage
+  const token = localStorage.getItem('token'); // Obtener el ID del usuario logueado del local storage
 
   const bookingData = {
-      userId,
+      token,
       rideId
   };
 
@@ -325,7 +325,7 @@ async function requestRide(rideId) {
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify(bookingData)
+          body: JSON(bookingData)
       });
 
       if (!response.ok) {

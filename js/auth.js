@@ -1,7 +1,6 @@
 // Crear usuario
 async function createUser(event) {
     
-
     let user = {
         first_name: document.getElementById("first_name").value,
         last_name: document.getElementById("last_name").value,
@@ -71,47 +70,6 @@ async function login() {
 }
 
 
-
-// Obtener datos del usuario logueado
-async function getLoggedInUserInfo() {
-    try {
-        const userId = localStorage.getItem('userId');
-
-        if (!userId) {
-            throw new Error('User ID not found in localStorage');
-        }
-
-        const response = await fetch(`http://localhost:3001/api/user/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch user data: ${response.statusText}`);
-        }
-
-        const userData = await response.json();
-        return userData;
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        return null;
-    }
-}
-
-// Mostrar nombre del usuario logueado en el HTML
-async function displayLoggedInUserName() {
-    const userNameElement = document.getElementById('user-name');
-    const userData = await getLoggedInUserInfo();
-
-    if (userData && userData.first_name && userData.last_name) {
-        userNameElement.textContent = `${userData.first_name} ${userData.last_name}`;
-    } else {
-        userNameElement.textContent = 'Guest';
-    }
-}
-
 // Cargar detalles del usuario en el formulario
 function loadUserDetails() {
     try {
@@ -150,4 +108,3 @@ function logout() {
     window.location.href = '../auth/login.html';
 }
 
-document.addEventListener('DOMContentLoaded', displayLoggedInUserName);

@@ -7,10 +7,12 @@
   <title>Driver Registration</title>
   <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
   <link href="/client/css/style-form-driver.css" rel="stylesheet">
-  <script src="../js/auth.js"></script>
-  <script src="../js/bookings.js"></script>
-  <script src="../js/rides.js"></script>
-  <script src="../js/event.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Añadido para Swal -->
+  <script src="../js/auth.js" defer></script>
+  <script src="../js/bookings.js" defer></script>
+  <script src="../js/rides.js" defer></script>
+  <script src="../js/event.js" defer></script>
+  <script src="../js/registration.js" defer></script>
 </head>
 
 <body>
@@ -21,33 +23,32 @@
       <h1 class="title">Driver Registration</h1>
     </div>
 
-    <form action="" action="/api/user" method="post" onsubmit="createUser(event)">
-
+    <form id="register-form" action="/api/user" method="post">
       <div class="form-row">
         <div class="form-group">
-          <input type="text" id="first_name" name="first-name" placeholder="First Name">
+          <input type="text" id="first_name" name="first-name" placeholder="First Name" required>
         </div>
         <div class="form-group">
-          <input type="text" id="last_name" name="last-name" placeholder="Last Name">
+          <input type="text" id="last_name" name="last-name" placeholder="Last Name" required>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <input type="text" id="cedula" name="cedula" placeholder="Cedula">
+          <input type="text" id="cedula" name="cedula" placeholder="Cedula" required>
         </div>
         <div class="form-group">
-          <input type="text" id="birthday" name="birthday" placeholder="Birthday">
+          <input type="text" id="birthday" name="birthday" placeholder="Birthday" required>
         </div>
       </div>
       <div class="form-group">
-        <input type="email" id="email" name="email" placeholder="Email">
+        <input type="email" id="email" name="email" placeholder="Email" required>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <input type="password" id="password" name="password" placeholder="Password">
+          <input type="password" id="password" name="password" placeholder="Password" required>
         </div>
         <div class="form-group">
-          <input type="password" id="repeat-password" name="repeat-password" placeholder="Repeat Password">
+          <input type="password" id="repeat-password" name="repeat-password" placeholder="Repeat Password" required>
         </div>
       </div>
       <div id="password-error" class="error-message" style="color: red; font-size: 12px; margin-bottom: 15px;"></div>
@@ -74,6 +75,8 @@
       <div class="links-group">
         <p>Already a driver? <a href="./login.html">Login here</a> Register as user? <a href="./user_registration.html">Click here</a></p>
         <button type="submit">Sign up</button>
+        <!-- Botón de registro con Google -->
+        <button type="button" id="google-register-button">Registrar con Google</button>
       </div>
     </form>
   </div>

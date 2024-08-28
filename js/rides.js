@@ -87,7 +87,7 @@ async function getRides() {
     
     try {
         // Realizar la solicitud al servidor GraphQL
-        const response = await fetch('http://localhost:4000/graphql', {
+        const response = await fetch('http://localhost:8080/graphql', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -277,40 +277,13 @@ async function searchRides(event) {
     const to = document.getElementById('to').value;
     const days = Array.from(document.querySelectorAll('input[name="days"]:checked')).map(input => input.value);
 
-    // Definir la consulta GraphQL
-    const query = `
-        query($from: String, $to: String, $days: [String]) {
-            searchRides(from: $from, to: $to, days: $days) {
-                _id
-                departureFrom
-                arriveTo
-                seats
-                vehicleDetails {
-                    make
-                }
-                fee
-                user {
-                    id
-                    first_name
-                    last_name
-                }
-            }
-        }
-    `;
-
-    const variables = {
-        from,
-        to,
-        days
-    };
-
     try {
-        const response = await fetch('http://localhost:4000/graphql', {
-            method: 'POST',
+        const response = await fetch("http://localhost:3001/api/rides/search", {
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query, variables })
+            body: JSON.stringify({ from, to, days })
         });
 
         if (!response.ok) {
@@ -319,20 +292,10 @@ async function searchRides(event) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const result = await response.json();
-        console.log(result); // Agregar esto para verificar la estructura de la respuesta
-
-        // Verificar si hay datos en result.data.searchRides
-        const rides = result.data?.searchRides;
-        if (!rides || rides.length === 0) { // Verifica también si `rides` es una lista vacía
-            console.warn('No rides found in the response.');
-            return;
-        }
-
+        const rides = await response.json();
         const tableBody = document.getElementById('ride-table-body');
         tableBody.innerHTML = '';
 
-        // Agregar cada ride a la tabla
         rides.forEach(ride => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -357,7 +320,7 @@ async function searchRides(event) {
 
 
 async function requestRide(rideId) {
-    const token = localStorage.getItem('token'); // Obtener el token del local storage
+    const token = sessionStorage.getItem('token'); // Obtener el token desde sessionStorage
   
     const bookingData = {
         rideId // Asegúrate de que estás enviando el rideId correcto
@@ -386,6 +349,7 @@ async function requestRide(rideId) {
         alert("Error requesting ride: " + error.message);
     }
 }
+
 
 
 
@@ -419,3 +383,66 @@ function loadRideDetailsEdit() {
         }
     }
 }
+
+
+// rides.js
+
+async function getDriverRides() {
+    const token = sessionStorage.getItem('token'); // Obtener el token desde sessionStorage
+
+    if (!token) {
+        console.error('No token found in sessionStorage');
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:3001/api/rides", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Incluir el token en los encabezados
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('HTTP error! Status: ' + response.status);
+        }
+
+        const rides = await response.json();
+        console.log("Rides fetched:", rides);
+
+        // Llama a la función para mostrar los rides en el front-end
+        displayRides(rides);
+    } catch (error) {
+        console.error('Error fetching rides:', error.message);
+    }
+}
+
+function displayRides(rides) {
+    const tableBody = document.getElementById('ride-table-body'); // Contenedor de la tabla
+    tableBody.innerHTML = ''; // Limpiar el contenedor antes de mostrar los rides
+
+    if (rides.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6">No rides found.</td></tr>';
+        return;
+    }
+
+    rides.forEach(ride => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${ride.departureFrom}</td>
+            <td>${ride.arriveTo}</td>
+            <td>${ride.seats}</td>
+            <td>${ride.vehicleDetails.make} ${ride.vehicleDetails.model} (${ride.vehicleDetails.year})</td>
+            <td>$${ride.fee}</td>
+            <td>
+                <a href="#" class="edit_button" onclick="editRide('${ride._id}')">Edit</a> | 
+                <a href="#" class="delete_button" onclick="deleteRide('${ride._id}')">Delete</a>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// Llama a esta función cuando la página se cargue o cuando sea necesario
+document.addEventListener('DOMContentLoaded', getDriverRides);

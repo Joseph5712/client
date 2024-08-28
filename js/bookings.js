@@ -7,35 +7,13 @@ async function getClientBookings() {
         return;
     }
 
-    // Definir la consulta GraphQL
-    const query = `
-        query($userId: ID!) {
-            bookingsByUser(userId: $userId) {
-                _id
-                ride {
-                    departureFrom
-                    arriveTo
-                    seats
-                    vehicleDetails {
-                        make
-                    }
-                    fee
-                }
-            }
-        }
-    `;
-    
-    const userId = "yourUserId"; // Reemplaza "yourUserId" con el valor adecuado
-
     try {
-        // Realizar la solicitud al servidor GraphQL
-        const response = await fetch('http://localhost:4000/graphql', {
-            method: 'POST',
+        const response = await fetch('http://localhost:3001/api/bookingsClient', {  // Cambia la URL según tu configuración
+            method: 'GET',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ query, variables: { userId } })
+            }
         });
 
         if (!response.ok) {
@@ -44,8 +22,7 @@ async function getClientBookings() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const result = await response.json();
-        const bookings = result.data.bookingsByUser;
+        const bookings = await response.json();
 
         const tableBody = document.getElementById("ride-table-body");
         tableBody.innerHTML = "";
@@ -60,7 +37,7 @@ async function getClientBookings() {
                     <td>${booking.ride.seats}</td>
                     <td>${booking.ride.vehicleDetails.make}</td>
                     <td>${booking.ride.fee}</td>
-                    <td><a href="#" class="cancel_button" onclick="cancelBooking('${booking._id}')">Cancel</a></td>
+                    <td>${booking.status}</td>
                 `;
                 tableBody.appendChild(row);
             } else {
@@ -72,6 +49,11 @@ async function getClientBookings() {
         alert("Error fetching client bookings: " + error.message);
     }
 }
+
+// Llama a esta función cuando la página se cargue
+document.addEventListener('DOMContentLoaded', getClientBookings);
+
+
 
 
 
